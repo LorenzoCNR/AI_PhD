@@ -1,0 +1,35 @@
+# Local reference checkouts (independent upstream repositories; see README).
+/CEBRA/
+/CPC_audio_reference/
+/SoftCLT/
+
+# Raw datasets are recoverable from the documented upstream sources.
+# Keep them locally; never add the ~700 MB data bundle to this repository.
+/data/
+
+# Generated fits, checkpoints, embeddings, metrics, and figures are local for now.
+# Curate a small publication subset separately before any future upload.
+/results/
+
+# Personal/reference-library material is not needed to run the code.
+/Ref Bib/
+
+# Local progress notes and research scratchpads; keep protocol and README.
+/STATUS.md
+/TODO.md
+/WORKLOG_DETAILED.md
+/RESEARCH_IDEAS_FROM_CEBRA.md
+
+# One-off repository-maintenance utility, not part of experiment reproduction.
+/cebra_replica/archive/
+
+# Python environments and transient files.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.env
+.DS_Store
+Thumbs.db
