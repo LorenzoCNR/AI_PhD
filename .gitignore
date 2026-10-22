@@ -7,9 +7,12 @@
 # Keep them locally; never add the ~700 MB data bundle to this repository.
 /data/
 
-# Generated fits, checkpoints, embeddings, metrics, and figures are local for now.
-# Curate a small publication subset separately before any future upload.
-/results/
+# Generated fits, checkpoints, embeddings and per-run metrics stay local.
+# The reviewed, lightweight paper-figure delivery is versioned separately.
+/results/*
+!/results/PAPER_FIGURE_DELIVERY/
+# High-resolution PDF exports duplicate the published PNGs and remain local.
+/results/PAPER_FIGURE_DELIVERY/**/*.pdf
 
 # Personal/reference-library material is not needed to run the code.
 /Ref Bib/
@@ -22,6 +25,10 @@
 
 # One-off repository-maintenance utility, not part of experiment reproduction.
 /cebra_replica/archive/
+
+# Published HDF5 figure-reference containers; keep local, do not push.
+/cebra_replica/monkey/official_reference/Figure3.h5
+/cebra_replica/monkey/official_reference/EDFigure8.h5
 
 # Python environments and transient files.
 .venv/

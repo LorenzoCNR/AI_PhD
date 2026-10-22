@@ -1,0 +1,20 @@
+{
+  "created_utc": "2026-10-12T18:30:07.222229+00:00",
+  "script_sha256": "c44d6e522ed7b15b1d0bb43c84d5c5a53873563345c65d2b2a54e6d0699cbbc4",
+  "parent_embedding_sha256": {
+    "target": "0dfce494848f360ca17ced8c9873be65976f360be1815708528280e25159b2cf",
+    "position": "41e64d1c26ef1395dbcd4b365a3870c9eeb07f51f9917f0e5b424a9a49550b29",
+    "time": "278a072dad211d7316510c1868cd3f12a199e9312258a798f96a487504da4547"
+  },
+  "figure_sha256": {
+    "EXTENDED8_MSE_TARGET.png": "4ad7a1ce3eeb0859d5175207c5e090fc96f8627eacd69e291e75c84fb471da1c",
+    "EXTENDED8_MSE_TARGET.pdf": "d50e239c5e51323adda8d285ba6c3ffa656fc52be1552b85c49ebced83a0c96a",
+    "EXTENDED8_MSE_POSITION.png": "133e741fef6157edffbbfc535c1795cbc45ad60b9eca78d49223040de88f44dc",
+    "EXTENDED8_MSE_POSITION.pdf": "dffffe3e2c8971876c2e55a9a7f6dddad3deca5cf6dc82cd66f116b829ef974b",
+    "EXTENDED8_MSE_TIME.png": "82d9b546737b64261bf10ef772c1d6f1c1d3db4e098f7a6c20900c9dbd573d33",
+    "EXTENDED8_MSE_TIME.pdf": "08746dfb92473e0a3cce3f8c23a340e13f948508718fc644da42382269c57951"
+  },
+  "reference_plot_source": "CEBRA cebra-figures/src/ExtendedDataFigure8.py",
+  "reference_hdf5_used_as_local_data": false,
+  "split": "active_all_full_sample_descriptive"
+}

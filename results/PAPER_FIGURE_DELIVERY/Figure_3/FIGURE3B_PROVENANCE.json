@@ -1,0 +1,24 @@
+{
+  "created_utc": "2026-10-12T19:39:36.034888+00:00",
+  "script_sha256": "af6cc67272f8f85bae03d0cbde1e4447a50f7a172b74039d3455f9474c379989",
+  "parent_embedding_sha256": {
+    "CEBRA-Behavior": "6d43ff41b2fd86740677f6b1eeb837119f5f2086e4354a2e7a681f71cab71af6",
+    "pi-VAE w/ label": "45db946e913028231b3d8f7005d636eb9c6d1adaaf23eaea2bc7f9192ca657d9",
+    "CEBRA-Time": "ced758155f57cefec712399d1273fbfebb8b54b4136e0f036253906218fcc990",
+    "pi-VAE w/o": "45db946e913028231b3d8f7005d636eb9c6d1adaaf23eaea2bc7f9192ca657d9",
+    "tSNE": "569827ccde012a903ae061021eada08eb899588fc0f28543882882b6ed6d6fed",
+    "UMAP": "704a6479cd3f649fde9412799a440b298b84e3145b59890e0683df1b6834f1c9"
+  },
+  "trial_mapping_sha256": "c78bfc1659c093b4bc1fc935e32df29471ad7f32b0de51ae93157ea937cfc3b5",
+  "trial_alignment": "active-session ordinal IDs mapped to original all-recording IDs; sorted and matched by trial_id/time_id",
+  "reference_plot_source": "CEBRA cebra-figures/src/Figure3.py",
+  "reference_hdf5_used": false,
+  "autoLFADS_included": false,
+  "full_sample_descriptive": true,
+  "pivae_variants": "two emissions from one direction-prior-trained checkpoint, outputs 0 and 6",
+  "baseline_parameter_caveat": "UMAP/openTSNE settings follow the prior rat baseline; exact monkey paper settings were not documented",
+  "figure_sha256": {
+    "FIGURE3B_LOCAL_NO_AUTOLFADS.png": "2a9897e9011eed799a62ea9e1868282f48f4683b9756486a47515f992c7c47b9",
+    "FIGURE3B_LOCAL_NO_AUTOLFADS.pdf": "e74c1749166eb70053607f2c8a07533ab133b147a11a037b8ed11ec37b8fccda"
+  }
+}

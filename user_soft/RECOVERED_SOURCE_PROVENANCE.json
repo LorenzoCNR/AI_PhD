@@ -1,0 +1,36 @@
+{
+  "created_utc": "2026-10-14T13:35:43.861Z",
+  "parent_ai_phd_commit": "0d0760e28ff42c82b35edcf3cb291a98efbe96eb",
+  "copies": [
+    {
+      "original_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\Neuro_Bridge\\src\\neurobridge\\losses\\infonce.py",
+      "original_sha256": "9427914fc50f24e6dcd6ea5df01c5ed687d4aad3cf65a9c3a673f91f67f2838c",
+      "copy_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\AI_PhD\\user_soft\\legacy_infonce.py",
+      "copy_sha256": "9427914fc50f24e6dcd6ea5df01c5ed687d4aad3cf65a9c3a673f91f67f2838c",
+      "content_equivalent_normalized_line_endings": true
+    },
+    {
+      "original_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\Neuro_Bridge\\src\\neurobridge\\sampling\\batch_similarity.py",
+      "original_sha256": "942ceca2e8f930da90ddbf317b15814a45b7f8e44b8966f42812240ce69df96a",
+      "copy_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\AI_PhD\\user_soft\\legacy_batch_similarity.py",
+      "copy_sha256": "942ceca2e8f930da90ddbf317b15814a45b7f8e44b8966f42812240ce69df96a",
+      "content_equivalent_normalized_line_endings": true
+    },
+    {
+      "original_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\Neuro_Bridge\\src\\neurobridge\\sampling\\positive_weights.py",
+      "original_sha256": "a3eaa3447fdf3cdf519626ddf72e16a0b88d7e38568696c79bcfd06a3c15b458",
+      "copy_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\AI_PhD\\user_soft\\legacy_positive_weights.py",
+      "copy_sha256": "a3eaa3447fdf3cdf519626ddf72e16a0b88d7e38568696c79bcfd06a3c15b458",
+      "content_equivalent_normalized_line_endings": true
+    },
+    {
+      "original_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\Neuro_Bridge\\src\\neurobridge\\models\\temporal_cnn.py",
+      "original_sha256": "d383fb13471cd26fef92ab0a1a746e98fbe0f944a9f34542938702c2794f1dbd",
+      "copy_path": "C:\\Users\\loren\\Desktop\\USB_Content\\New project\\AI_PhD\\user_soft\\recovered_encoders.py",
+      "copy_sha256": "78b7e0eff8a0812c067ac6c7d1dffdf0d9b098c500ca9059790c1bb8030d2f9e",
+      "content_equivalent_normalized_line_endings": true
+    }
+  ],
+  "historical_lineage": "generic original API soft_v1_frozen; distinct staged final fixed-scale lineage documented",
+  "training_dependency": "none on Neuro_Bridge local path; copies are standalone"
+}

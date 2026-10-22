@@ -78,6 +78,48 @@ The added ED8 AP-position and AP-direction fits use separate roots under
 `results/monkey_extended8_paper_v1/stage01_fit_heldout/`.
 Each fit has an immutable checkpoint, loss history, and source/config hashes.
 Seeds 42-46 are local replication seeds, not asserted to be the authors' exact
-random seeds. Figure 3h decoding and Figure 3i held-out trajectory remain
-separate pending panels. Test outcomes are reported descriptively and are not
-used for model selection.
+random seeds. Figure 3h decoding and Figure 3i held-out trajectory are complete
+in `results/monkey_figure3_paper_v1/stage03_figures/figure3hi/`, with PNG/PDF,
+provenance and the trajectory result record. Test outcomes are reported
+descriptively and are not used for model selection.
+
+## Verified navigation update (2026-10-19)
+
+The current inventory verifies 125 held-out CEBRA checkpoint hashes against
+their manifests: 75 Figure 3 fits (position, direction, AP; each 5 dimensions
+x 5 seeds) and 50 ED8 fits (AP-position, AP-direction; each 5 dimensions x
+5 seeds). These have 375 canonical train/valid/test embedding exports and
+125 decoder result records. Existing fits must be reused, not retrained.
+
+The local run tree does not contain fit histories for all 20 ED8 loss
+conditions. However, the published curve arrays themselves are present in the
+local official-reference container
+`cebra_replica/monkey/official_reference/EDFigure8.h5`; they can be replotted
+as reference data without fitting. The three completed MSE embedding fits
+remain separate from those curves. Do not describe reference curves as local
+fits.
+
+Use the dated index
+`results/PAPER_FIGURE_DELIVERY/Figure_3/MONKEY_CURRENT_STATE_2026-10-19.md`
+for every Figure 3 panel, ED8 artifacts and unresolved own-loss mappings.
+Historical `PANEL_STATUS.json`, root STATUS/TODO and older README passages
+are not authoritative live campaign counters. This update changes only
+documentation: no checkpoint, embedding, split, result or figure was changed.
+
+## Figure delivery and Soft monkey results (2026-10-22)
+
+`results/user_soft_monkey_v1/CAMPAIGN_STATE.json` verifies 250/250 completed
+fits: 150 observed and 100 behavior-shuffled controls, CNN and Transformer,
+time-only / behavior-only / joint XY, dimensions 3/4/8/16/32, five seeds
+42-46. Training histories are stored in each fit's `manifest.json`; held-out
+test embeddings and decoding results are already saved. No additional seed or
+encoder fit is required to make the current plots.
+
+The organized delivery is indexed by
+`results/PAPER_FIGURE_DELIVERY/MONKEY_FIGURE_DELIVERY_INDEX_2026-10-22.md`.
+It places Figure 3 A-H together, shows Soft test embeddings separately by
+seed, summarizes Soft test decoding over all five seeds, and plots Soft loss
+histories by dimension. The ED8 reference-loss plot reuses the published
+arrays from the local HDF5; it is explicitly not a new local CEBRA fit.
+Soft monkey runs use active trials and joint XY behavior only, so they do not
+provide matching Soft fits for passive/all-trial AP panels 3e-g.

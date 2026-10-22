@@ -1,0 +1,51 @@
+{
+  "created_utc": "2026-10-12T19:45:50.331469+00:00",
+  "script_sha256": "0c9ff1bf0d7bc7715c047fdefdd5e973f2a0a400481b18087e7c978f3a61a097",
+  "parents": {
+    "CEBRA-Behavior/seed_42": {
+      "train_embedding_sha256": "af041256272db40f15cd4f16de859976378ca84814a278efa6089830ab7a8d32",
+      "test_embedding_sha256": "fc958c91a04e03987a37cc31698b7c4ca48d0d391ec88564771e707318441173",
+      "seed": "42"
+    },
+    "CEBRA-Behavior/seed_43": {
+      "train_embedding_sha256": "8da13fd5ae3eaf7b4002f38b39ab513be5ff2e6797a4d7d0fed275396b0abbe4",
+      "test_embedding_sha256": "588dc4725d9284561447b197e979ff74dde39b598d68f0514d9f8b4e14f51162",
+      "seed": "43"
+    },
+    "CEBRA-Behavior/seed_44": {
+      "train_embedding_sha256": "fc43378ed47c0ee7a814094c47dd90f4b3fb7b57582dc70b4cb37f55a8b46290",
+      "test_embedding_sha256": "03e0b6b0bd514b16f89b0ae1fdcd821d329702f8d14923cc425c6bd890175ee3",
+      "seed": "44"
+    },
+    "CEBRA-Behavior/seed_45": {
+      "train_embedding_sha256": "d0eae28f490e261ec3cffdf01f07ad0ccb990927b633da705ec91dae6cd6f8de",
+      "test_embedding_sha256": "2dd5f280ec550086ddd9288ecf7a257d2680b85996fb36c07696cb0d591ed0d1",
+      "seed": "45"
+    },
+    "CEBRA-Behavior/seed_46": {
+      "train_embedding_sha256": "39a1b9657a694c19b26f0ae0c2e88cec05281afa56b14ca407132f9ec9f3a7f8",
+      "test_embedding_sha256": "41aa744303a1d4e586e451f2c4f68cbd5c9e05e1ca2eb8fe89344d98f8901c9b",
+      "seed": "46"
+    },
+    "conv-piVAE": {
+      "train_embedding_sha256": "2e37410cf6f6f7d93facb7a952e69520d553f0c2f1969c08d8fb45d78e1e33e6",
+      "test_embedding_sha256": "0b1feb7988f587aea7ba892547ced1092bf94d5a27be1a61dbcb6a0722843c23",
+      "seed": "42"
+    },
+    "Ridge classifier": {
+      "active_train_sha256": "b451cd7fabb4ebbce263b92677966445bdb8e07d044063a7a483d648823a20f9",
+      "active_test_sha256": "2d3558b721d6d53ad9a1c390a15ef73516857cdf181e1dc4861e20f1846edcfe"
+    }
+  },
+  "csv_sha256": "6f214283d743ff57955e19dec07ee052b037500195823c2f5a028d13f396ed7d",
+  "figure_sha256": {
+    "EXTENDED8_DIRECTION_DECODING_TIMECOURSE.png": "1f57f5c5b09da1eb53aee6e8eaceffef41b5cded3331def46076e134ec5e237f",
+    "EXTENDED8_DIRECTION_DECODING_TIMECOURSE.pdf": "c23ea48f24b93af561e07be242f42d4b39fe2ee9fa25cff715001069d23a1a96"
+  },
+  "split": "train-fit/test-score, active trials",
+  "time_support": "600 bins, 1 ms; x-axis shifted by movement onset (-100 to 499 ms)",
+  "CEBRA_and_piVAE_decoder": "KNN cosine k=36, fit separately at each time bin",
+  "Ridge_classifier_alpha": 1.0,
+  "piVAE_representation": "q(z|x), no inference-time direction labels",
+  "CEBRA_curve": "mean of five seed-specific curves; replicate values retained in CSV"
+}

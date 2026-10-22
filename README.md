@@ -12,6 +12,16 @@ The large or separately maintained material stays local and is intentionally ign
 
 ## Start here: map an action to code
 
+The new personal-loss comparison is isolated in [`user_soft/`](user_soft/README.md):
+`soft_v1_frozen`, `soft_v1_stable`, unchanged official offset10 CNN, joint rat
+position/direction, 3 official folds and the original seeds42-51 plan (240 fits).
+The execution amendment of 14 October stops CNN at seeds42-48: **168 fits,
+seven seeds per rat**, then runs the separate first eight Transformer fits.
+See [`CNN_SEED_CAP.md`](user_soft/CNN_SEED_CAP.md). Test,
+source-reconstruction, protocol and audit reports are linked inside that folder.
+The stages live under ignored `results/user_soft_rat_v1/`; prior CEBRA outputs
+are reused by hash, not modified.
+
 | If you want to… | Start with… | Important behavior |
 |---|---|---|
 | Read the frozen rat replication choices | `RAT_REPLICATION_PLAN.md` | Protocol, splits, conditions, and paper-comparison caveats. |
@@ -26,6 +36,80 @@ The large or separately maintained material stays local and is intentionally ign
 | Follow monkey stages and paper-panel boundaries | `cebra_replica/monkey/README.md` | Data preparation, fits, embeddings, figures, and Extended Data 8. |
 
 Before any fit, use the script's `--help` and confirm the intended output path. Fit scripts do not publish results: they write locally to `results/`, which remains ignored here. Existing local outputs are not removed by this Git configuration.
+
+The curated, lightweight paper-figure delivery is the only versioned results
+subset: [`PAPER_FIGURE_DELIVERY`](results/PAPER_FIGURE_DELIVERY/README.md).
+It contains selected PNG figures, summary tables, and provenance/index files;
+per-run outputs and large PDF duplicates stay local and ignored.
+
+## Datasets: experimental description and paper references
+
+### Rat hippocampus: spatial navigation
+
+The CEBRA paper analyses hippocampal recordings from four rats navigating a
+1.6-m linear track in both directions. The original recordings are from the
+Grosmark/Buzsaki CA1 dataset. Neural activity and the animal's location and
+running direction allow the study of spatial representations, behavioural
+decoding, and embedding consistency across animals and training repetitions.
+The relevant paper panels are Figures 1c-e and 2b-d, and Extended Data Figures
+1-5. Sources: [CEBRA paper](https://www.nature.com/articles/s41586-023-06031-6)
+and [original CRCNS hc-11 dataset](https://crcns.org/data-sets/hc/hc-11/about-hc-11).
+
+**Representation used by the official loader and this repository:**
+
+- Subjects: `achilles`, `buddy`, `cicero`, `gatsby`; neuron counts vary by subject.
+- Neural matrix: `spikes`, time samples by neurons, with spike counts in 25-ms bins.
+- Behaviour matrix: `position`, time samples by three columns: position,
+  rightward indicator, leftward indicator. The last two columns encode one
+  binary direction, not two independent behavioural variables.
+- The official `SingleRatTrialSplitDataset` parses navigation trials and creates
+  three nested train/validation/test folds (`0`, `1`, `2`). Training seeds are
+  independent repetitions within these folds, not additional data splits.
+- A 10-bin neural context is used by `offset10-model`; labels are auxiliary
+  information for the objective, not additional neural encoder input.
+
+These format/split details are verified in
+`CEBRA/cebra/datasets/hippocampus.py`; project-specific choices are in
+[`RAT_REPLICATION_PLAN.md`](RAT_REPLICATION_PLAN.md) and
+[`user_soft/README.md`](user_soft/README.md). This description does not claim
+that every paper panel uses the same embedding dimension or fitting settings.
+
+### Monkey Area 2: centre-out reaching
+
+The second dataset comprises electrophysiological recordings during active
+reaching and passive arm displacement, with hand kinematics and movement
+direction as behavioural variables. It originates from Chowdhury and colleagues'
+Area 2 study and is distributed through the Neural Latents Benchmark. CEBRA
+uses it to study representations of forelimb behaviour (Figure 3 and Extended
+Data Figure 8). See the [CEBRA paper](https://www.nature.com/articles/s41586-023-06031-6).
+
+**Representation used by the official loader and this repository:**
+
+- Neural matrix: `spikes`, time samples by 65 recorded units.
+- Trial-aligned interval: -100 to +500 ms relative to movement onset;
+  600 samples per trial at 1-ms resolution.
+- Published neural preprocessing: Gaussian smoothing with standard deviation
+  40 ms. The 1-ms sample interval is not the smoothing width.
+- Continuous behaviour: hand position `pos` and velocity `vel`, each with
+  x/y coordinates. Trial metadata include active/passive type and eight
+  movement directions (`movement_dir`); `movement_dir_actpas` additionally
+  distinguishes active from passive trials.
+- The twelve published bundles cover `all`, `active`, and `passive`, each with
+  `all`, `train`, `valid`, and `test` variants. These are views/splits of the
+  recording, not twelve independent animals or sessions.
+- The preparation stage verifies published checksums and recovers global trial
+  correspondence by exact trial-content matching, rather than assuming that
+  the complete container is ordered by split.
+
+These details are verified in `CEBRA/cebra/datasets/monkey_reaching.py` and
+[`prepare_figure3.py`](cebra_replica/monkey/prepare_figure3.py).
+The panel-specific execution guide is
+[`cebra_replica/monkey/README.md`](cebra_replica/monkey/README.md).
+
+The `.jl` files below are **preprocessed datasets**, not regenerated experiment
+results and not raw acquisition files. Downloading them reproduces the input
+boundary used here; model fitting, embedding export, decoding, and figures are
+separate stages.
 
 ## Recovering the data
 
