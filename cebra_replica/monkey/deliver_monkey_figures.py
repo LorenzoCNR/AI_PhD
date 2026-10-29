@@ -23,6 +23,8 @@ import numpy as np
 import pandas as pd
 from scipy.signal import savgol_filter
 
+from figure3_style import POSITION_CMAP, POSITION_LIMITS, SOFT_OBJECTIVE_LABELS
+
 
 ROOT = Path(__file__).resolve().parents[2]
 RESULTS = ROOT / "results"
@@ -194,7 +196,7 @@ def soft_loss_curves() -> tuple[list[Path], list[dict]]:
                     label = "observed labels" if branch == "observed" else "behavior-shuffled control"
                     ax.plot(x, mean, linestyle=style, color=colors[branch], lw=1.5, label=label)
                     ax.fill_between(x, mean - sd, mean + sd, color=colors[branch], alpha=0.16, linewidth=0)
-                ax.set_title(f"{arch.upper()} — {condition.replace('_', ' ')}")
+                ax.set_title(f"{arch.upper()} — {SOFT_OBJECTIVE_LABELS[condition]}", fontsize=10)
                 ax.set_xlabel("Optimizer updates")
                 ax.set_ylabel("Training loss")
                 ax.grid(True, alpha=0.18)
@@ -226,14 +228,15 @@ def soft_embeddings() -> tuple[list[Path], dict[str, str]]:
             mask = data["valid_mask"].astype(bool)
             z = data["embedding_raw"][mask]
             posx = data["position_xy"][mask, 0]
-            ax.scatter(z[:, 0], z[:, 1], z[:, 2], c=posx, cmap="seismic",
-                       vmin=-15, vmax=15, s=0.45, alpha=0.75, rasterized=True)
-            ax.set_title(f"{arch.upper()} — {condition.replace('_', ' ')}", fontsize=11)
+            ax.scatter(z[:, 0], z[:, 1], z[:, 2], c=posx, cmap=POSITION_CMAP,
+                       vmin=POSITION_LIMITS[0], vmax=POSITION_LIMITS[1],
+                       s=0.45, alpha=0.75, rasterized=True)
+            ax.set_title(f"{arch.upper()} — {SOFT_OBJECTIVE_LABELS[condition]}", fontsize=9)
             ax.set_axis_off()
             ax.view_init(elev=24, azim=-58)
             sm = plt.cm.ScalarMappable(cmap="seismic", norm=plt.Normalize(-15, 15))
-        fig.suptitle(f"Monkey Soft embeddings — active held-out test, seed {seed}, dim 3\n"
-                     "Colour: hand position x (cm); axes hidden as in the paper panels", fontsize=15)
+        fig.suptitle(f"Soft output 3D — active held-out TEST, seed {seed}\n"
+                     "Color: position x for display only; fixed seismic scale −15…+15 cm", fontsize=15)
         cax = fig.add_axes([0.925, 0.18, 0.018, 0.62])
         fig.colorbar(sm, cax=cax, label="Position x (cm)")
         stem = FIG3 / f"FIGURE3_SOFT_HELDOUT_EMBEDDINGS_SEED_{seed}"
@@ -261,7 +264,7 @@ def soft_decoding() -> tuple[list[Path], list[dict], dict[str, str]]:
                         raise ValueError(f"Missing raw-test-kNN result in {path}")
                     rows.append({
                         "architecture": arch,
-                        "condition": condition,
+                        "objective": SOFT_OBJECTIVE_LABELS[condition],
                         "dimension": dim,
                         "seed": seed,
                         "split": "test",
@@ -289,7 +292,7 @@ def soft_decoding() -> tuple[list[Path], list[dict], dict[str, str]]:
             ax = axes[row_idx, col]
             for arch in ARCHS:
                 for j, dim in enumerate(DIMS):
-                    vals = [r[metric] * 100 for r in rows if r["condition"] == condition
+                    vals = [r[metric] * 100 for r in rows if r["objective"] == SOFT_OBJECTIVE_LABELS[condition]
                             and r["architecture"] == arch and r["dimension"] == dim]
                     offset = -0.08 if arch == "cnn" else 0.08
                     jitter = np.linspace(-0.025, 0.025, len(vals))
@@ -298,15 +301,15 @@ def soft_decoding() -> tuple[list[Path], list[dict], dict[str, str]]:
                                label=arch.upper() if (j == 0 and row_idx == 0) else None)
                     ax.plot(j + offset, np.median(vals), marker="_", markersize=18,
                             markeredgewidth=2.5, color=colors[arch])
-            ax.set_title(f"{condition.replace('_', ' ')} — " +
-                         ("position R²" if row_idx == 0 else "direction accuracy"))
+            ax.set_title(f"{SOFT_OBJECTIVE_LABELS[condition]} — " +
+                         ("position X,Y R²" if row_idx == 0 else "direction 1–8 accuracy"))
             ax.set_xticks(range(len(DIMS)), DIMS)
             ax.set_xlabel("Embedding dimension")
             ax.set_ylabel("Score (%)")
             ax.grid(True, axis="y", alpha=0.18)
     axes[0, 0].legend(frameon=False)
-    fig.suptitle("Soft held-out decoding — active monkey, five seeds (42–46)\n"
-                 "Test results shown descriptively; no model selection", fontsize=15)
+    fig.suptitle("Soft held-out decoding: position X,Y and direction 1–8\n"
+                 "Position/direction use active data; five seeds (42–46). Test results are descriptive; no model selection.", fontsize=15)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
     files = [csv_path]
     files.extend(save_new(fig, FIG3 / "FIGURE3H_SOFT_HELDOUT_DECODING_5SEED"))

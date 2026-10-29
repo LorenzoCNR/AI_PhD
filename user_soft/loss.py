@@ -35,9 +35,9 @@ def _validate(batch, specs):
 
 
 def fit_distance_scales(batch, specs, *, split='train', source_ids=None):
-    """Fit deterministic distance bounds on TRAIN metadata only."""
-    if split != 'train':
-        raise ValueError("distance scales can only be fitted on train")
+    """Fit deterministic distance bounds on TRAIN or an explicit full recording."""
+    if split not in ('train', 'full_recording'):
+        raise ValueError("distance scales require train or explicit full_recording scope")
     count = _validate(batch, specs)
     if not count:
         raise ValueError("train metadata cannot be empty")
@@ -73,9 +73,16 @@ def fit_distance_scales(batch, specs, *, split='train', source_ids=None):
     ids = native_ids
     if len(ids) != count:
         raise ValueError("training source_ids cardinality mismatch")
-    return dict(split='train', policy='train_range_or_feature_bounding_box_no_clipping', scales=scales,
-                train_id_sha256=hashlib.sha256(json.dumps(ids, separators=(',', ':')).encode()).hexdigest(),
-                train_count=count, specs=[dict(s) for s in specs])
+    id_hash = hashlib.sha256(json.dumps(ids, separators=(',', ':')).encode()).hexdigest()
+    return dict(split=split,
+                policy=('train_range_or_feature_bounding_box_no_clipping' if split == 'train'
+                        else 'full_recording_range_or_feature_bounding_box_no_clipping'),
+                scales=scales,
+                train_id_sha256=id_hash if split == 'train' else None,
+                full_recording_id_sha256=id_hash if split == 'full_recording' else None,
+                train_count=count if split == 'train' else None,
+                full_recording_count=count if split == 'full_recording' else None,
+                specs=[dict(s) for s in specs])
 
 
 @dataclass
@@ -113,7 +120,8 @@ class SoftResult:
 
 
 def evaluate_soft(z, batch, specs, version='soft_v1_stable', scales=None,
-                  temperature=.1, metadata_temperature=.5, candidate_mask=None, empty_rows='error'):
+                  temperature=.1, metadata_temperature=.5, candidate_mask=None, empty_rows='error',
+                  allow_full_recording_scales=False):
     """Return loss and diagnostic distributions without changing the encoder."""
     if version not in ('soft_v1_frozen', 'soft_v1_stable'):
         raise ValueError("unknown soft version")
@@ -143,8 +151,11 @@ def evaluate_soft(z, batch, specs, version='soft_v1_stable', scales=None,
         Q = W/mass.clamp_min(1e-8)
         log_W = similarity.log().masked_fill(~mask, -torch.inf)
     else:
-        if scales is None or scales.get('split') != 'train' or scales.get('specs') != [dict(s) for s in specs]:
-            raise ValueError("stable version requires matching TRAIN fitted scales")
+        valid_scope = (scales is not None and scales.get('split') == 'train')
+        full_scope = (allow_full_recording_scales and scales is not None
+                      and scales.get('split') == 'full_recording')
+        if not (valid_scope or full_scope) or scales.get('specs') != [dict(s) for s in specs]:
+            raise ValueError("stable version requires matching TRAIN scales or explicitly allowed full-recording scales")
         if len(scales['scales']) != len(specs):
             raise ValueError("scale cardinality mismatch")
         distance = torch.zeros((n,n), device=z.device, dtype=z.dtype)

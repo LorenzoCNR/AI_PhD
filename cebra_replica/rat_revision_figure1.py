@@ -28,6 +28,16 @@ def architecture_label(a):
     return 'CNN1D' if a == 'CNN' else 'Transformer'
 
 
+def figure1d_label(label):
+    if label == 'CEBRA-Behavior':
+        return 'CEBRA-Behavior\n(Position + Direction)'
+    if 'Time + Behavior' in label:
+        return label.replace('Time + Behavior', 'Time + Behavior\n(Position + Direction)')
+    if 'Behavior' in label:
+        return label.replace('Behavior', 'Behavior\n(Position + Direction)')
+    return label
+
+
 def validate_support(arrays, rat, fold):
     baseline = support_for(rat, fold)['test']
     for field in ('source_id', 'behavior', 'valid_mask'):
@@ -50,40 +60,82 @@ def figure1d(index):
             d = load_fit(index, spec['kind'], spec['method'], rat, 0, spec['seed'], 'test', spec.get('variant', 'raw'))
             mask = d['valid_mask']
             label = 'Conv-piVAE' if spec['kind'] == 'pivae' else spec['display']
-            panels.append((label, d['embedding'][mask], d['behavior'][mask], d['source_id'][mask], False))
+            panels.append((figure1d_label(label), d['embedding'][mask], d['behavior'][mask], d['source_id'][mask], False))
             parents.append(dict(path=d['embedding_path'].relative_to(ROOT).as_posix(), sha256=d['embedding_sha256'],
                                 manifest=d['manifest_path'].relative_to(ROOT).as_posix(), manifest_sha256=common.sha(d['manifest_path'])))
         for a, c in KEYS:
             arrays, parent = common.embedding(a, c, rat, seed=42, fold=0)
             validate_support(arrays, rat, 0)
             mask = arrays['valid_mask']
-            panels.append((common.DISPLAY[(a,c)], arrays['embedding_raw'][mask], arrays['behavior'][mask], arrays['source_id'][mask], True))
+            panels.append((figure1d_label(common.DISPLAY[(a,c)]), arrays['embedding_raw'][mask], arrays['behavior'][mask], arrays['source_id'][mask], True))
             parents.append(parent)
         ids, behavior = panels[0][3], panels[0][2]
         for label, emb, beh, source, _ in panels:
             if not np.array_equal(ids, source) or not np.array_equal(behavior, beh):
                 raise RuntimeError(f'Gallery held-out support mismatch:{rat}/{label}')
+            plotted_dimensions = 3 if label.startswith('CEBRA-') or label.startswith('Soft ') else 2
+            if emb.shape[1] < plotted_dimensions:
+                raise RuntimeError(f'Embedding too small for requested projection:{rat}/{label}/{emb.shape}')
             rows.append(dict(rat=rat, method=label.replace('\n',' '), seed=42, fold=0,
                              split='held_out_test', n_samples=len(ids), fit_dimension=emb.shape[1],
-                             plotted_dimensions=2, representation='embedding_raw'))
+                             plotted_dimensions=plotted_dimensions,
+                             plotted_coordinates='0,1,2' if plotted_dimensions == 3 else '0,1',
+                             representation='embedding_raw'))
         norm = Normalize(float(behavior[:,0].min()), float(behavior[:,0].max()))
-        fig, axes = plt.subplots(2, 6, figsize=(21, 8.0), facecolor='white')
-        for ax, (label, emb, beh, _, soft) in zip(axes.flat, panels):
-            for col, cmap in ((2,'cool'), (1,'viridis')):
-                selected = beh[:,col] == 1
-                ax.scatter(emb[selected,0], emb[selected,1], c=beh[selected,0], cmap=cmap, norm=norm,
-                           s=2.2, linewidths=0, rasterized=True)
-            ax.set_title(label, color='red' if soft else 'black', fontsize=12, pad=10)
-            ax.set_facecolor('white'); ax.set_axis_off()
-        fig.subplots_adjust(left=.025, right=.99, top=.94, bottom=.12, hspace=.23, wspace=.16)
-        for bounds, cmap, title in (([.36,.055,.12,.015],'cool','Left'),([.53,.055,.12,.015],'viridis','Right')):
-            colorbar = fig.colorbar(ScalarMappable(norm=norm,cmap=cmap), cax=fig.add_axes(bounds), orientation='horizontal')
-            colorbar.set_ticks([]); colorbar.set_label(title, fontsize=11)
+        is_3d = [label.startswith('CEBRA-') or label.startswith('Soft ') for label, *_ in panels]
+        fig = plt.figure(figsize=(23, 9.2), facecolor='white')
+        grid = fig.add_gridspec(2, 6, left=.045, right=.955, top=.91, bottom=.09,
+                                hspace=.22, wspace=.11)
+        fig.suptitle(f'{rat.capitalize()} | held-out test | seed 42, fold 0', y=.975, fontsize=13)
+        for i, (label, emb, beh, _, soft) in enumerate(panels):
+            row, col = divmod(i, 6)
+            use_3d = is_3d[i]
+            ax = fig.add_subplot(grid[row, col], projection='3d' if use_3d else None)
+            for behavior_col, cmap in ((2,'cool'), (1,'viridis')):
+                selected = beh[:,behavior_col] == 1
+                if use_3d:
+                    ax.scatter(emb[selected,0], emb[selected,1], emb[selected,2],
+                               c=beh[selected,0], cmap=cmap, norm=norm, s=1.0,
+                               linewidths=0, rasterized=True, depthshade=False)
+                else:
+                    ax.scatter(emb[selected,0], emb[selected,1], c=beh[selected,0],
+                               cmap=cmap, norm=norm, s=2.2, linewidths=0, rasterized=True)
+            ax.set_title(label, color='red' if soft else 'black', fontsize=9.5, pad=8)
+            ax.set_facecolor('white')
+            if use_3d:
+                limit = max(float(np.max(np.abs(emb[:, :3]))) * 1.04, 0.35)
+                ax.set_xlim(-limit, limit); ax.set_ylim(-limit, limit); ax.set_zlim(-limit, limit)
+                ax.set_box_aspect((1, 1, 1)); ax.view_init(elev=22, azim=38)
+                ax.set_xlabel('Latent 1', fontsize=7, labelpad=0)
+                ax.set_ylabel('Latent 2', fontsize=7, labelpad=0)
+                ax.set_zlabel('Latent 3', fontsize=7, labelpad=0)
+                ax.set_xticks([]); ax.set_yticks([]); ax.set_zticks([])
+                for axis in (ax.xaxis, ax.yaxis, ax.zaxis):
+                    axis.pane.fill = False
+                    axis.pane.set_edgecolor('white')
+                    axis.line.set_color('#cccccc')
+            else:
+                ax.set_axis_off()
+        fig.text(.5, .035,
+                 'CEBRA and Soft: first 3 coordinates of 32D fits; Conv-piVAE, PCA, UMAP and t-SNE: native 2D.',
+                 ha='center', va='center', fontsize=8)
+        for bounds, cmap, title, label_side in (([.957,.24,.010,.52],'cool','Left | Position','left'),
+                                                ([.973,.24,.010,.52],'viridis','Right | Position','right')):
+            colorbar = fig.colorbar(ScalarMappable(norm=norm,cmap=cmap), cax=fig.add_axes(bounds),
+                                    orientation='vertical')
+            colorbar.set_ticks([]); colorbar.set_label(title, fontsize=8, labelpad=4)
+            colorbar.ax.yaxis.set_label_position(label_side)
         common.save(fig, STAGE/'Figure_1/1D'/f'FIGURE1D_{rat.upper()}_BEHAVIOR_INCLUDED', '1D', parents,
                     dict(rat=rat, seed=42, fold=0, split='held_out_test', n_samples=len(ids),
-                         projection='first2nativecoords; neural32D vs baseline2D; descriptive not dimension-matched',
+                         projection='CEBRA and Soft first3of32D in3D; Conv-piVAE/PCA/UMAP/t-SNE native2D',
+                         fitted_dimensions='unchanged; CEBRA and Soft 32D, reference baselines 2D',
+                         embedding_preprocessing='raw native outputs; no plotting-time embedding normalization',
+                         axis_scaling='independent symmetric limits per 3D panel; coordinates unmodified',
+                         behavior_label='Behavior (Position + Direction)',
+                         colorbars='vertical outer sides; position within left/right direction',
                          piVAE='one q(z|x) output; no test-time labels', marker_size=2.2,
-                         legends='Left and Right only; cool/viridis', encoder_fit=False))
+                         legends='Left and Right position gradients; cool/viridis', encoder_fit=False))
+    common.write_csv(STAGE/'Figure_1/1D'/'FIGURE1D_PANEL_INDEX.csv', rows)
     common.write_csv(TABLES/'FIGURE1D_PANEL_INDEX_20261021.csv', rows)
 
 

@@ -109,6 +109,14 @@ class SoftQualification(unittest.TestCase):
         extreme["behavior"]*=1e6
         self.call(batch=extreme)
         self.assertEqual(self.scales,saved)
+    def test_full_recording_scales_require_explicit_opt_in(self):
+        scales=fit_distance_scales(self.batch,SPECS,split="full_recording",source_ids=np.arange(8))
+        self.assertEqual(scales["split"],"full_recording")
+        with self.assertRaises(ValueError):
+            evaluate_soft(self.z,self.batch,SPECS,scales=scales)
+        result=evaluate_soft(self.z,self.batch,SPECS,scales=scales,
+                             allow_full_recording_scales=True)
+        self.assertTrue(torch.isfinite(result.loss))
     def test_numpy_training_ids_provenance_equivalent(self):
         scales=fit_distance_scales(self.batch,SPECS,split="train",source_ids=np.arange(8,dtype=np.int64))
         self.assertEqual(scales["train_id_sha256"],self.scales["train_id_sha256"])

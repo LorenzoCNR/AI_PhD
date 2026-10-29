@@ -13,6 +13,8 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from figure3_style import DIRECTION_COLORS
+
 
 PROJECT = Path(__file__).resolve().parents[2]
 ROOT = PROJECT / "results/monkey_figure3_paper_v1"
@@ -67,15 +69,15 @@ def main() -> None:
     cebra_root = ROOT / "stage02_embedding"
     baseline_root = ROOT / "stage02_embedding_baselines"
     specs = [
-        ("CEBRA-Behavior", cebra_root / "figure3b_e_active_target_4d/seed_42/all_trials.npz",
+        ("CEBRA — Direction 1–8", cebra_root / "figure3b_e_active_target_4d/seed_42/all_trials.npz",
          "embedding_raw", cebra_root / "figure3b_e_active_target_4d/seed_42/EMBEDDING_PROVENANCE.json", (2, 0), False),
-        ("pi-VAE w/ label", baseline_root / "conv_pivae/seed_42/all_trials.npz",
+        ("pi-VAE\ndirection prior; label at inference", baseline_root / "conv_pivae/seed_42/all_trials.npz",
          "with_label_raw", baseline_root / "conv_pivae/seed_42/EMBEDDING.json", (2, 3), True),
-        ("CEBRA-Time", cebra_root / "figure3b_active_time_4d/seed_42/all_trials.npz",
+        ("CEBRA — Time", cebra_root / "figure3b_active_time_4d/seed_42/all_trials.npz",
          "embedding_raw", cebra_root / "figure3b_active_time_4d/seed_42/EMBEDDING_PROVENANCE.json", (0, 1), False),
-        ("pi-VAE w/o", baseline_root / "conv_pivae/seed_42/all_trials.npz",
+        ("pi-VAE\ndirection prior; no label at inference", baseline_root / "conv_pivae/seed_42/all_trials.npz",
          "without_label_raw", baseline_root / "conv_pivae/seed_42/EMBEDDING.json", (2, 3), True),
-        ("tSNE", baseline_root / "opentsne/seed_42/all_trials.npz",
+        ("t-SNE", baseline_root / "opentsne/seed_42/all_trials.npz",
          "embedding_raw", baseline_root / "opentsne/seed_42/EMBEDDING.json", (0, 1), True),
         ("UMAP", baseline_root / "umap/seed_42/all_trials.npz",
          "embedding_raw", baseline_root / "umap/seed_42/EMBEDDING.json", (0, 1), True),
@@ -122,12 +124,15 @@ def main() -> None:
                     raise ValueError(f"Missing direction {label} for {title}")
                 mean = selected.mean(axis=0)
                 axis.plot(mean[:, coords[0]], mean[:, coords[1]],
-                          color=plt.cm.hsv(label / 8), linewidth=3)
+                          color=DIRECTION_COLORS[label], linewidth=3)
             for spine in axis.spines.values():
                 spine.set_visible(False)
             axis.set_xticks([])
             axis.set_yticks([])
             axis.set_title(title, fontsize=20)
+        figure.text(0.5, 0.015, "Full active-trial set aligned across methods; descriptive visualization, not held-out.",
+                    ha="center", fontsize=10)
+        figure.subplots_adjust(bottom=0.10)
         figure.savefig(png, dpi=300, facecolor="white", bbox_inches="tight")
         figure.savefig(pdf, facecolor="white", bbox_inches="tight")
         plt.close(figure)

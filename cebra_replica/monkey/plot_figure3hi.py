@@ -21,6 +21,7 @@ from score_figure3h import K, ROOT as SCORE_ROOT
 
 
 ROOT = PROJECT / "results" / "monkey_figure3_paper_v1" / "stage03_figures" / "figure3hi"
+SOURCE_ROOT = ROOT
 TASKS = ("position", "direction", "ap")
 
 
@@ -44,7 +45,8 @@ def panel_h() -> None:
             raise ValueError(f"Incomplete task: {task}")
     plt.rcParams.update({"font.size": 13, "figure.facecolor": "white", "axes.facecolor": "white"})
     fig, axes = plt.subplots(3, 1, figsize=(5, 20))
-    titles = ("Position decoding (active)", "Direction decoding (active)", "AP decoding")
+    titles = ("Position X,Y decoding (active)", "Direction 1–8 decoding (active)",
+              "Active vs passive condition decoding")
     units = ("$R^2$ (%)", "Acc(%)", "Acc(%)")
     paper_ylims = ((50, 100), (50, 80), (50, 100))
     for axis, task, title, unit, paper_ylim in zip(axes, TASKS, titles, units, paper_ylims):
@@ -65,7 +67,11 @@ def panel_h() -> None:
         axis.set_title(title, pad=22)
         axis.spines["right"].set_visible(False)
         axis.spines["top"].set_visible(False)
-    fig.subplots_adjust(hspace=0.8)
+    fig.suptitle("Figure 3H — held-out decoding across five seeds (42–46)", y=0.995)
+    fig.text(0.5, 0.005,
+             "Position, direction, and condition scores on held-out trials; five seed values and their median.",
+             ha="center", fontsize=10)
+    fig.subplots_adjust(hspace=0.8, top=0.96, bottom=0.04)
     ROOT.mkdir(parents=True, exist_ok=True)
     fig.savefig(ROOT / "FIGURE3H_LOCAL_REPLICATION.png", dpi=300, bbox_inches="tight", facecolor="white")
     fig.savefig(ROOT / "FIGURE3H_LOCAL_REPLICATION.pdf", bbox_inches="tight", facecolor="white")
@@ -104,10 +110,18 @@ def panel_i() -> None:
     r2 = float(r2_score(y_test, predicted))
     ROOT.mkdir(parents=True, exist_ok=True)
     plt.rcParams.update({"figure.facecolor": "white", "axes.facecolor": "white"})
-    fig, ax = plt.subplots(figsize=(6, 6))
-    ax.scatter(y_test[:, 0], y_test[:, 1], s=1, color="gray")
-    ax.scatter(predicted[:, 0], predicted[:, 1], s=1, color="red")
-    ax.axis("off")
+    fig, ax = plt.subplots(figsize=(7, 6))
+    ax.scatter(y_test[:, 0], y_test[:, 1], s=2, color="#555555", alpha=0.55,
+               label="Observed position X,Y")
+    ax.scatter(predicted[:, 0], predicted[:, 1], s=2, color="#d62728", alpha=0.55,
+               label="Decoded position X,Y")
+    ax.set_title("Figure 3I — held-out position decoding\n"
+                 f"CEBRA 16D, seed 42; test R²={r2:.3f}")
+    ax.set_xlabel("Position X (cm)")
+    ax.set_ylabel("Position Y (cm)")
+    ax.legend(frameon=False, loc="best", markerscale=3)
+    ax.set_aspect("equal", adjustable="datalim")
+    ax.grid(True, alpha=0.18)
     fig.savefig(ROOT / "FIGURE3I_LOCAL_REPLICATION.png", dpi=300, bbox_inches="tight", facecolor="white")
     fig.savefig(ROOT / "FIGURE3I_LOCAL_REPLICATION.pdf", bbox_inches="tight", facecolor="white")
     plt.close(fig)
@@ -121,6 +135,39 @@ def panel_i() -> None:
         "plot_script_sha256": sha256(Path(__file__)),
         "seed_selection": "seed 42 fixed before test scoring; not selected by test performance",
     }, indent=2), encoding="utf-8")
+
+
+def panel_i_from_saved_plot() -> None:
+    """Add explicit labels around the existing Figure 3I raster; do not refit a decoder."""
+    source_image = SOURCE_ROOT / "FIGURE3I_LOCAL_REPLICATION.png"
+    source_result = SOURCE_ROOT / "FIGURE3I_RESULT.json"
+    if not source_image.is_file() or not source_result.is_file():
+        raise FileNotFoundError("Saved Figure 3I plot/result is missing")
+    image = plt.imread(source_image)
+    result = json.loads(source_result.read_text(encoding="utf-8"))
+    fig, ax = plt.subplots(figsize=(7, 7))
+    ax.imshow(image)
+    ax.axis("off")
+    fig.suptitle("Figure 3I — held-out position X,Y decoding\n"
+                 f"CEBRA {result['dimension']}D, seed {result['seed']}; test R²={result['position_R2']:.3f}",
+                 fontsize=15)
+    from matplotlib.lines import Line2D
+    handles = [Line2D([], [], marker="o", linestyle="", color="0.5",
+                      label="Observed position X,Y"),
+               Line2D([], [], marker="o", linestyle="", color="red",
+                      label="Decoded position X,Y")]
+    fig.legend(handles=handles, loc="lower center", ncol=2, frameon=False)
+    fig.text(0.5, 0.035,
+             "Original held-out scatter reused unchanged; decoder was trained on TRAIN embeddings only.",
+             ha="center", fontsize=9)
+    fig.subplots_adjust(top=0.86, bottom=0.12)
+    ROOT.mkdir(parents=True, exist_ok=True)
+    fig.savefig(ROOT / "FIGURE3I_LOCAL_REPLICATION.png", dpi=300, bbox_inches="tight", facecolor="white")
+    fig.savefig(ROOT / "FIGURE3I_LOCAL_REPLICATION.pdf", bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+    result["plot_annotation"] = "Labels added around saved source plot; no decoder was refit by this renderer."
+    result["source_plot_sha256"] = sha256(source_image)
+    (ROOT / "FIGURE3I_RESULT.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":

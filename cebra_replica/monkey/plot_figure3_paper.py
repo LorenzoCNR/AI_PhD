@@ -16,6 +16,8 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+from figure3_style import DIRECTION_COLORS, POSITION_CMAP, POSITION_LIMITS
+
 from fit_figure3_paper import PROJECT, SEED
 
 
@@ -61,7 +63,8 @@ def save(fig, name: str) -> None:
 
 def plot_3b_cebra_only() -> None:
     names = ("figure3b_e_active_target_4d", "figure3b_active_time_4d")
-    specs = (("CEBRA-Behavior", (2, 0)), ("CEBRA-Time", (0, 1)))
+    specs = (("CEBRA — Direction 1–8", (2, 0)),
+             ("CEBRA — Time", (0, 1)))
     fig, axes = plt.subplots(1, 2, figsize=(10, 5))
     for axis, name, (title, coords) in zip(axes, names, specs):
         data = load(name)
@@ -71,12 +74,15 @@ def plot_3b_cebra_only() -> None:
             if not np.any(direction == label):
                 raise ValueError(f"Missing direction {label} for {name}")
             mean = trials[direction == label].mean(axis=0)
-            axis.plot(mean[:, coords[0]], mean[:, coords[1]], color=plt.cm.hsv(label / 8), linewidth=3)
+            axis.plot(mean[:, coords[0]], mean[:, coords[1]], color=DIRECTION_COLORS[label], linewidth=3)
         for spine in axis.spines.values():
             spine.set_visible(False)
         axis.set_xticks([])
         axis.set_yticks([])
         axis.set_title(title, fontsize=20)
+    fig.text(0.5, 0.015, "Full active-trial set; descriptive visualization, not held-out.",
+             ha="center", fontsize=9)
+    fig.subplots_adjust(bottom=0.12)
     save(fig, "FIGURE3B_CEBRA_ONLY_PAPER_SETTINGS")
 
 
@@ -89,12 +95,17 @@ def plot_3cd(name: str, title: str, output_name: str) -> None:
     for slot, column, text in ((121, 0, "x pos"), (122, 1, "y pos")):
         axis = fig.add_subplot(slot, projection="3d")
         axis.set_title(text)
-        points = axis.scatter(features[:, 0], features[:, 1], features[:, 2], c=labels[:, column], cmap="seismic", s=0.05, vmin=-15, vmax=15)
+        points = axis.scatter(features[:, 0], features[:, 1], features[:, 2], c=labels[:, column],
+                              cmap=POSITION_CMAP, s=0.05,
+                              vmin=POSITION_LIMITS[0], vmax=POSITION_LIMITS[1])
         clear_axis(axis)
         if column == 1:
             bar = plt.colorbar(points, fraction=0.03, pad=0.05, ticks=np.linspace(-15, 15, 7))
             bar.ax.tick_params(labelsize=15)
             bar.ax.set_title("(cm)", fontsize=10)
+    fig.text(0.5, 0.01, "Full active-trial set; descriptive visualization, not held-out.",
+             ha="center", fontsize=9)
+    fig.subplots_adjust(bottom=0.08)
     save(fig, output_name)
 
 
@@ -124,13 +135,16 @@ def plot_3efg(name_active: str, name_passive: str | None, title: str, coords: tu
     for slot, dataset, is_passive, label in ((121, active, False, "Active"), (122, passive, True, "Passive")):
         axis = fig.add_subplot(slot, projection="3d")
         for direction, trajectory in enumerate(mean_trajectories(dataset, is_passive, mode)):
-            color = plt.cm.hsv(direction / 8)
+            color = DIRECTION_COLORS[direction]
             x, y, z = (trajectory[:, index] for index in coords)
             axis.plot(x, y, z, color=color)
             axis.plot(x[0], y[0], z[0], color=color, marker="o", markersize=10)
             axis.plot(x[-1], y[-1], z[-1], color=color, marker="<", markersize=10)
         clear_axis(axis)
         axis.set_title(label, fontsize=20)
+    fig.text(0.5, 0.01, "All available active/passive trials; direction-averaged descriptive trajectories, not held-out.",
+             ha="center", fontsize=10)
+    fig.subplots_adjust(bottom=0.08)
     save(fig, output_name)
 
 
@@ -145,21 +159,31 @@ def main() -> None:
         if not (EMBED / name / f"seed_{SEED}" / "EMBEDDING_PROVENANCE.json").exists():
             raise FileNotFoundError(f"Missing frozen embedding: {name}")
     plot_3b_cebra_only()
-    plot_3cd("figure3c_active_position_3d", "CEBRA-Behavior, labels - continuous position", "FIGURE3C_PAPER_SETTINGS")
-    plot_3cd("figure3d_active_time_3d", "CEBRA-Time, labels - continuous position", "FIGURE3D_PAPER_SETTINGS")
-    plot_3efg("figure3b_e_active_target_4d", "figure3e_passive_target_4d", "Separately trained active/passive trials with direction (1-8) labels", (1, 2, 0), "global", "FIGURE3E_PAPER_SETTINGS")
-    plot_3efg("figure3f_all_target_ap_4d", None, "Concurrently trained active/passive trials with direction (1-8) + active/passive trial info labels", (2, 0, 1), "row", "FIGURE3F_PAPER_SETTINGS")
-    plot_3efg("figure3g_all_position_ap_4d", None, "Trained with continuous position label", (0, 1, 2), "row", "FIGURE3G_PAPER_SETTINGS")
+    plot_3cd("figure3c_active_position_3d",
+             "CEBRA — Position X,Y",
+             "FIGURE3C_PAPER_SETTINGS")
+    plot_3cd("figure3d_active_time_3d",
+             "CEBRA — Time",
+             "FIGURE3D_PAPER_SETTINGS")
+    plot_3efg("figure3b_e_active_target_4d", "figure3e_passive_target_4d",
+              "CEBRA — Direction 1–8: separate active and passive fits",
+              (1, 2, 0), "global", "FIGURE3E_PAPER_SETTINGS")
+    plot_3efg("figure3f_all_target_ap_4d", None,
+              "CEBRA — Direction 1–8 + Active/Passive",
+              (2, 0, 1), "row", "FIGURE3F_PAPER_SETTINGS")
+    plot_3efg("figure3g_all_position_ap_4d", None,
+              "CEBRA — Position X,Y",
+              (0, 1, 2), "row", "FIGURE3G_PAPER_SETTINGS")
     status = {
         "figure3a": "complete_in_monkey_figure3_v1_stage00",
-        "figure3b": "CEBRA-only; piVAE, autoLFADS, tSNE, UMAP pending",
+        "figure3b": "local CEBRA and multi-method full-sample descriptive panels complete; no held-out filter",
         "figure3c": "complete_local_fit_descriptive",
         "figure3d": "complete_local_fit_descriptive",
         "figure3e": "complete_local_fit_descriptive",
         "figure3f": "complete_local_fit_descriptive",
         "figure3g": "complete_local_fit_descriptive",
-        "figure3h": "pending_5_seed_5_dimension_decoding",
-        "figure3i": "pending_decoded_trajectory",
+        "figure3h": "complete_heldout_decoding",
+        "figure3i": "complete_heldout_position_decoding",
         "note": "Reference HDF5 was not used to render local results. Full-sample descriptive, not held-out.",
     }
     status_path = FIGURES / "PANEL_STATUS.json"
