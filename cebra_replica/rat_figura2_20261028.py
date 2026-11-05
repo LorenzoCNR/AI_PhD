@@ -73,9 +73,10 @@ def render_b(family,entries):
         bar=fig.colorbar(ScalarMappable(norm=NORM,cmap=cmap),cax=fig.add_axes([x,.28,.012,.40]),ticks=[0,.5,1,1.5])
         bar.ax.tick_params(labelsize=7);fig.text(x+.006,.245,label,ha='center',fontsize=9)
     fig.subplots_adjust(left=.035,right=.89,top=.93,bottom=.08,wspace=.25,hspace=.38)
-    stem=DEST/'b/Achilles'/f'Figura_2b_Achilles_{family}'
+    stem=DEST/'plot/b/Achilles'/f'Figura_2b_Achilles_{family}'
     save(fig,stem)
-    (stem.parent/f'RIFERIMENTI_{family}.json').write_text(json.dumps({'rat':'achilles','seed':42,'sources':[e[4] for e in entries],
+    meta_dir=DEST/'processo/provenienza/b/Achilles';meta_dir.mkdir(parents=True,exist_ok=True)
+    (meta_dir/f'RIFERIMENTI_{family}.json').write_text(json.dumps({'rat':'achilles','seed':42,'sources':[e[4] for e in entries],
        'fit_and_plot':'full recording; all 10178 rows','labels':'colors are actual position/direction even for shuffled fits',
        'behavior_inputs':'two exploratory fits, output 2D; exact original configuration unverified','training_performed':False},indent=2),encoding='utf-8')
 
@@ -86,7 +87,7 @@ def render_c(family,entries,histories):
         ax=fig.add_subplot(2,3,i+1,projection='3d');ax.scatter(*z[:,dims].T,c='gray',s=.45,linewidths=0,rasterized=True)
         ax.set_title(title,fontsize=10);ax.view_init(elev=20,azim=-60);ax.tick_params(labelsize=6,pad=0)
     fig.subplots_adjust(wspace=.12,hspace=.24)
-    stem=DEST/'c/Achilles'/f'Figura_2c_Achilles_{family}'
+    stem=DEST/'plot/c/Achilles'/f'Figura_2c_Achilles_{family}'
     save(fig,stem)
     fig,ax=plt.subplots(figsize=(7,4.5))
     for i,(title,loss) in enumerate(histories):
@@ -94,7 +95,8 @@ def render_c(family,entries,histories):
         ax.plot(np.arange(1,len(loss)+1),loss,color='gray' if shuffled else 'deepskyblue',alpha=alpha,linewidth=.8,label=title)
     ax.set_xlabel('Update');ax.set_ylabel('Training loss');ax.legend(fontsize=8);ax.spines[['top','right']].set_visible(False)
     fig.tight_layout();save(fig,stem.with_name(stem.name+'_loss'))
-    (stem.parent/f'RIFERIMENTI_{family}.json').write_text(json.dumps({'rat':'achilles','seed':42,'sources':[e[4] for e in entries],
+    meta_dir=DEST/'processo/provenienza/c/Achilles';meta_dir.mkdir(parents=True,exist_ok=True)
+    (meta_dir/f'RIFERIMENTI_{family}.json').write_text(json.dumps({'rat':'achilles','seed':42,'sources':[e[4] for e in entries],
       'fit_and_plot':'full recording; first three coordinates of native 8D embedding','updates':10000,'original_file':'official arrays 8D; official loss arrays contain 5000 values','training_performed':False},indent=2),encoding='utf-8')
 
 
@@ -154,10 +156,10 @@ def figures_bc():
 
 
 def calc_2d():
-    metrics=ROOT/'results/figura_ext_4_2026-10-28/calcoli/heldout_decoding_due_variabili.csv'
+    metrics=ROOT/'results/figura_ext_4_2026-10-28/processo/metriche/calcoli/heldout_decoding_due_variabili.csv'
     with metrics.open(newline='',encoding='utf-8') as f: cells=list(csv.DictReader(f))
     methods={label:(kind,variant) for label,kind,variant in source.METHODS}
-    cache=DEST/'d/calcoli';cache.mkdir(parents=True,exist_ok=True)
+    cache=DEST/'processo/metriche/d/calcoli';cache.mkdir(parents=True,exist_ok=True)
     device=torch.device('cuda' if torch.cuda.is_available() else 'cpu');torch.set_num_threads(2)
     all_rows=[]
     for i,cell in enumerate(cells):
@@ -192,7 +194,7 @@ def calc_2d():
             path.write_text(json.dumps(row,indent=2),encoding='utf-8')
         all_rows.append(row)
         if i%40==0 or i+1==len(cells):print(f'DECODING {i+1}/{len(cells)}',flush=True)
-    with (DEST/'d'/'metriche_fold.csv').open('w',newline='',encoding='utf-8') as f:
+    with (DEST/'processo/metriche/d/metriche_fold.csv').open('w',newline='',encoding='utf-8') as f:
         w=csv.DictWriter(f,fieldnames=list(all_rows[0]));w.writeheader();w.writerows(all_rows)
     return all_rows
 
@@ -221,20 +223,21 @@ def figures_d(rows):
         for ax in axes:ax.grid(axis='x',alpha=.2);ax.spines[['top','right','left']].set_visible(False)
         axes[0].plot([],[],marker='o',color='#3268ae',ls='',label='kNN');axes[0].plot([],[],marker='s',color='#cf793b',ls='',label='Ridge');axes[0].legend(fontsize=8)
         fig.suptitle(rat.capitalize(),fontsize=13);fig.tight_layout()
-        stem=DEST/'d'/rat.capitalize()/f'Figura_2d_{rat.capitalize()}'
+        stem=DEST/'plot/d'/rat.capitalize()/f'Figura_2d_{rat.capitalize()}'
         save(fig,stem)
-        (stem.parent/'RIFERIMENTI.md').write_text('''# Figura 2d\n\nMetriche per fold: `../metriche_fold.csv` (i singoli record con percorsi e hash sono nella cartella `../calcoli`). Fit encoder 1e/ED4, sei seed 42–47, tre fold per trial, train/validation/test separati. kNN cosine, k scelto sulla validation in base alla media degli R² Position e Direction; errore mediano e accuracy sul test. Ridge usa standardizzazione e alpha 0.1, 1, 10 selezionato sulla validation per R² posizione. Punti: media tre fold per seed; barre: mediana. PCA è deterministica. Non si usa q(z|x,u) per decoding.\n''',encoding='utf-8')
+        meta_dir=DEST/'processo/provenienza/d'/rat.capitalize();meta_dir.mkdir(parents=True,exist_ok=True)
+        (meta_dir/'RIFERIMENTI.md').write_text('''# Figura 2d\n\nMetriche per fold: `../../../metriche/d/metriche_fold.csv` (i singoli record con percorsi e hash sono in `../../../metriche/d/calcoli`). Questi output correnti usano i fit della campagna `rat_paper_fig1e_ed4_6seed_v1`: sei seed 42–47, tre fold per trial, train/validation/test separati. kNN cosine, k scelto sulla validation in base alla media degli R² Position e Direction; errore mediano e accuracy sul test. Ridge usa standardizzazione e alpha 0.1, 1, 10 selezionato sulla validation per R² posizione. Punti: media tre fold per seed; barre: mediana. PCA è deterministica. Non si usa q(z|x,u) per decoding.\n''',encoding='utf-8')
 
 
 def main():
     for panel in ('b','c','d'):
-        for rat in RATS:(DEST/panel/rat.capitalize()).mkdir(parents=True,exist_ok=True)
+        for rat in RATS:(DEST/'plot'/panel/rat.capitalize()).mkdir(parents=True,exist_ok=True)
     figures_bc()
     rows=calc_2d();figures_d(rows)
     for panel in ('b','c'):
         for rat in RATS[1:]:
-            (DEST/panel/rat.capitalize()/'RIFERIMENTI.md').write_text('Nessun grafico: le nuove stime richieste 2b–2c sono state eseguite solo per Achilles.\n',encoding='utf-8')
-    (DEST/'RIFERIMENTI.md').write_text('''# Figura 2 — riferimenti\n\nCodice: `cebra_replica/rat_figura2_20261028.py`. I pannelli b e c usano solo le stime Achilles in `reproduction/figure2_bc` e le stime Soft full-recording T=1 indicate nei JSON per grafico. CEBRA e Soft sono separati. Due prove di input comportamentale 2D sono esplorative, non configurazioni originali confermate. In 2c le stime 8D mostrano coordinate 1–3; i dati ufficiali contengono 5000 valori loss, questi fit 10000.\n\nIl pannello d usa i quattro ratti e le stime 1e/ED4; i calcoli sono in `d/calcoli` e `d/metriche_fold.csv`. Non sono stati riaddestrati encoder. Le righe incomplete e le esclusioni sono esplicitate, nessun q(z|x,u) per decoding.\n\nNotebook ufficiale: https://cebra.ai/docs/cebra-figures/figures/Figure2.html\n''',encoding='utf-8')
+            (DEST/'plot'/panel/rat.capitalize()/'RIFERIMENTI.md').write_text('Nessun grafico: le nuove stime richieste 2b–2c sono state eseguite solo per Achilles.\n',encoding='utf-8')
+    (DEST/'RIFERIMENTI.md').write_text('''# Figura 2 — riferimenti\n\nCodice: `cebra_replica/rat_figura2_20261028.py`. I pannelli b e c usano le stime registrate nei manifest. Il pannello d riusa gli embedding della campagna 1E/ED4; metriche e record per fold sono sotto `processo/metriche/d/`. I plot per pannello e ratto sono sotto `plot/<lettera>/<ratto>/`.\n\nNotebook ufficiale: https://cebra.ai/docs/cebra-figures/figures/Figure2.html\n''',encoding='utf-8')
     print('COMPLETE',DEST,flush=True)
 
 

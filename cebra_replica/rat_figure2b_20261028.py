@@ -10,7 +10,7 @@ from matplotlib.colors import Normalize
 import rat_rebuild_fig2bc as source
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'results' / 'figura_2_2026-10-28' / 'b'
+OUT = ROOT / 'results' / 'figura_2_2026-10-28' / 'plot' / 'b'
 
 
 def read(rat, condition):
@@ -91,9 +91,11 @@ def main():
                                for item, dims, title in panels],
                     'shuffled': 'position labels permuted for training; plotted colors use true labels',
                     'reference': 'https://cebra.ai/docs/cebra-figures/figures/Figure2.html'}
-        (dest / 'RIFERIMENTI.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
+        meta_dir = ROOT / 'results' / 'figura_2_2026-10-28' / 'processo' / 'provenienza' / 'b' / rat.capitalize()
+        meta_dir.mkdir(parents=True, exist_ok=True)
+        (meta_dir / 'RIFERIMENTI.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
         print(rat, 'ok', flush=True)
-    (OUT.parent / 'RIFERIMENTI.md').write_text('# Figura 2b\n\nCodice: `cebra_replica/rat_figure2b_20261028.py`. Ogni ratto ha un file RIFERIMENTI.json con sorgenti e hash. Il primo pannello richiede un fit su dati comportamentali non disponibile; non è sostituito da un fit neurale. Nessun nuovo training.\n', encoding='utf-8')
+    (ROOT / 'results' / 'figura_2_2026-10-28' / 'RIFERIMENTI.md').write_text('# Figura 2b\n\nCodice: `cebra_replica/rat_figure2b_20261028.py`. Ogni ratto ha un file RIFERIMENTI.json con sorgenti e hash in `processo/provenienza/b`. Il primo pannello richiede un fit su dati comportamentali non disponibile; non è sostituito da un fit neurale. Nessun nuovo training.\n', encoding='utf-8')
 
 
 if __name__ == '__main__':

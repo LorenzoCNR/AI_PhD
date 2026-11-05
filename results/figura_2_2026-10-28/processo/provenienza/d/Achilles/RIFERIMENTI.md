@@ -1,0 +1,5 @@
+# Figura 2d
+
+Traiettorie held-out di Achille: `Figura_2d_Achilles_traiettorie_test.png/.pdf/.svg`. Confronta posizione reale, kNN e Ridge sui 12 metodi, seed 42 / fold 0; il tratto è il più lungo intervallo consecutivo comune del test (307 campioni, 25 ms, source rows 5–311). Indici, metodi, parametri selezionati e hash degli input sono in `RIFERIMENTI_TRAIETTORIE.json`. Codice: `cebra_replica/rat_figura2d_trajectory_other_rats.py --rat achilles`.
+
+Metriche per fold: `../../../metriche/d/metriche_fold.csv` (i singoli record con percorsi e hash sono in `../../../metriche/d/calcoli`). Fit encoder della campagna `rat_paper_fig1e_ed4_6seed_v1`, sei seed 42–47, tre fold per trial, train/validation/test separati. kNN cosine, k scelto sulla validation in base alla media degli R² Position e Direction; errore mediano e accuracy sul test. Ridge usa standardizzazione e alpha 0.1, 1, 10 selezionato sulla validation per R² posizione. Punti: media tre fold per seed; barre: mediana. PCA è deterministica. Non si usa q(z|x,u) per decoding. Questi output non sono ancora aggiornati alla campagna `rat_paper_fig1e_ed4_10seed_v2`.

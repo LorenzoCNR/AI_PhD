@@ -110,7 +110,8 @@ def build_ed3() -> None:
     campaign = json.loads(campaign_path.read_text(encoding="utf-8"))
     summary = {}
     for letter, rat in RATS:
-        rat_dir = ED3 / letter / rat.capitalize()
+        rat_dir = ED3 / "plot" / letter / rat.capitalize()
+        provenance_dir = ED3 / "processo" / "provenienza" / letter / rat.capitalize()
         raw_path = ROOT / "data" / "rat_hippocampus" / f"{rat}.jl"
         raw = np.asarray(joblib.load(raw_path)["position"], dtype=np.float32)
         if raw.ndim != 2 or raw.shape[1] != 3 or not np.isfinite(raw).all():
@@ -125,7 +126,7 @@ def build_ed3() -> None:
                     item["coordinates"] = [1, 2]
             paths = render_ed3(rat, panels, rat_dir / f"ED3_{rat.upper()}_{family.upper()}")
             records[family] = {"models": items, "outputs": {rel(p): sha(p) for p in paths}}
-        write_json(rat_dir / "PROVENANCE.json", {
+        write_json(provenance_dir / "PROVENANCE.json", {
             "figure": "Extended Data 3", "folder_letter": letter, "rat": rat,
             "training_performed": False, "source_data": rel(raw_path), "source_data_sha256": sha(raw_path),
             "soft_campaign": rel(campaign_path), "soft_campaign_sha256": sha(campaign_path),
@@ -197,13 +198,14 @@ def build_ed4() -> None:
               "heldout_decoding.csv", "support_audit.json", "manifest.json")
     source_hashes = {rel(METRICS / name): sha(METRICS / name) for name in inputs}
     for letter, rat in RATS:
-        rat_dir = ED4 / letter / rat.capitalize()
+        rat_dir = ED4 / "plot" / letter / rat.capitalize()
+        provenance_dir = ED4 / "processo" / "provenienza" / letter / rat.capitalize()
         groups = {}
         for name, methods in (("Paper", PAPER), ("Soft", SOFT)):
             paths, missing = render_ed4(rat, methods, rows, rat_dir / f"ED4_{rat.upper()}_{name.upper()}")
             groups[name] = {"methods": [m[0] for m in methods], "missing_metric_cells": missing,
                             "outputs": {rel(path): sha(path) for path in paths}}
-        write_json(rat_dir / "PROVENANCE.json", {"figure": "Extended Data 4", "rat": rat,
+        write_json(provenance_dir / "PROVENANCE.json", {"figure": "Extended Data 4", "rat": rat,
                    "folder_letter": letter, "training_performed": False, "seeds": list(range(42, 48)),
                    "folds": [0, 1, 2], "input_tables": source_hashes, "groups": groups})
         print(f"ED4 {rat}: Paper and Soft", flush=True)

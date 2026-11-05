@@ -19,7 +19,7 @@ import run_cebra as base
 
 ROOT=Path(__file__).resolve().parents[3]
 OUT=ROOT/'reproduction/figure2_bc/figure2c_8d_other_rats'
-FIG=ROOT/'results/figura_2_2026-10-28/c'
+FIG=ROOT/'results/figura_2_2026-10-28/plot/c'
 CONDITIONS=('position','direction_paper_demo','position_direction','position_shuffled',
             'direction_shuffled_paper_demo','position_direction_shuffled','direction_controlled','direction_shuffled_controlled')
 LABELS=('Position','Direction','Position + Direction','Position shuffled','Direction shuffled','Position + Direction shuffled')

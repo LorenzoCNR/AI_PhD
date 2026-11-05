@@ -13,7 +13,7 @@ import rat_rebuild_1e_ed4_metrics as source
 import rat_figura2_20261028 as fig2
 
 ROOT=Path(__file__).resolve().parents[1]
-DEST=ROOT/'results/figura_2_2026-10-28/d'
+DEST=ROOT/'results/figura_2_2026-10-28/plot/d'
 RATS=('buddy','cicero','gatsby')
 
 

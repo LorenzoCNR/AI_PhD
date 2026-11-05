@@ -12,7 +12,7 @@ from user_soft.loss import fit_distance_scales
 
 ROOT=Path(__file__).resolve().parents[3]
 OUT=ROOT/'reproduction/figure2_bc/soft_2c_8d_other_rats'
-FIG=ROOT/'results/figura_2_2026-10-28/c'
+FIG=ROOT/'results/figura_2_2026-10-28/plot/c'
 RATS=('buddy','cicero','gatsby')
 CONDITIONS=('position','direction','position_direction','position_shuffled','direction_shuffled','position_direction_shuffled')
 LABELS=('Position','Direction','Position + Direction','Position shuffled','Direction shuffled','Position + Direction shuffled')

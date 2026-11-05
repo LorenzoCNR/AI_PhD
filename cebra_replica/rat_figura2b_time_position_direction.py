@@ -10,7 +10,7 @@ import rat_figura2_20261028 as fig2
 
 ROOT=fig2.ROOT
 FIT=ROOT/'reproduction/figure2_bc/time_position_direction_5d'
-PANEL=ROOT/'results/figura_2_2026-10-28/b'
+PANEL=ROOT/'results/figura_2_2026-10-28/plot/b'
 STAGE=FIT/'rendering'
 RATS=('achilles','buddy','cicero','gatsby')
 
