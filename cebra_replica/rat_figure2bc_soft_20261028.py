@@ -11,7 +11,7 @@ import rat_rebuild_fig2bc as source
 import rat_rebuild_1e_ed4_metrics as metrics
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'results' / 'figura_2_2026-10-28'
+OUT = ROOT / 'results' / 'figura_2_2026-10-28' / 'plot'
 SOFT = [('time_only', 'Time'), ('direction_position', 'Position + Direction'),
         ('time_direction_position', 'Time + Position + Direction')]
 CEBRA = [('position', 'Position'), ('direction', 'Direction'),
@@ -58,7 +58,9 @@ def plot(rat, family, panel, entries, histories, refs):
             if path.exists(): raise FileExistsError(path)
             fig.savefig(path,dpi=220,bbox_inches='tight')
         plt.close(fig)
-    (dest / f'RIFERIMENTI_{family}.json').write_text(json.dumps(refs,indent=2,ensure_ascii=False),encoding='utf-8')
+    metadata = ROOT / 'results' / 'figura_2_2026-10-28' / 'processo' / 'provenienza' / panel / rat.capitalize()
+    metadata.mkdir(parents=True, exist_ok=True)
+    (metadata / f'RIFERIMENTI_{family}.json').write_text(json.dumps(refs,indent=2,ensure_ascii=False),encoding='utf-8')
 
 
 def main():

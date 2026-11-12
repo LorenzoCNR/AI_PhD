@@ -1,0 +1,19 @@
+{
+  "created_utc": "2026-10-12T18:06:31.583579+00:00",
+  "task": "position",
+  "dimension": 16,
+  "seed": 42,
+  "test_trial_count": 26,
+  "test_row_count": 15600,
+  "position_R2": 0.7932098507881165,
+  "paper_position_R2_reported": 0.88,
+  "decoder": "cebra.KNNDecoder",
+  "k": 36,
+  "distance": "cosine",
+  "train_embedding_sha256": "ea75f464f23a37367eb060b574923ba0f74cd9a76157ccad6e2a8afc702c11ca",
+  "test_embedding_sha256": "8288d2ac14e119f96f1679816236ed5eb3d71b205a087ddf642ffa9c809467fe",
+  "plot_script_sha256": "dfc0dfb54410d778f093de127600ed96c89ee31ae7403b02bc06c55afcfe1825",
+  "seed_selection": "seed 42 fixed before test scoring; not selected by test performance",
+  "plot_annotation": "Labels added around saved source plot; no decoder was refit by this renderer.",
+  "source_plot_sha256": "349ba15ee262d7a415c38e24f265e06a726700c1d854c0629bdf4efef80d7700"
+}

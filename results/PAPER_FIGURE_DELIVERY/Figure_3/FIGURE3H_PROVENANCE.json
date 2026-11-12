@@ -1,0 +1,609 @@
+{
+  "created_utc": "2026-10-23T12:38:47.736137+00:00",
+  "source": "https://cebra.ai/docs/cebra-figures/figures/Figure3.html",
+  "score_records": [
+    {
+      "task": "position",
+      "dimension": 3,
+      "seed": 42,
+      "score": 61.72969341278076,
+      "metric": "R2_percent",
+      "result_sha256": "b90145e305e976dd5604c659fa401e771e88a1a03744ebc954ad41de11ca710e"
+    },
+    {
+      "task": "position",
+      "dimension": 3,
+      "seed": 43,
+      "score": 63.75342607498169,
+      "metric": "R2_percent",
+      "result_sha256": "63b0104c1e542cd1728a39f17fe2f527c84aad9fcf17483608abecfaa65aaaf9"
+    },
+    {
+      "task": "position",
+      "dimension": 3,
+      "seed": 44,
+      "score": 63.46942186355591,
+      "metric": "R2_percent",
+      "result_sha256": "cbe68fcbaaa99fa7c79f5b0cda731a871866b2aece05baf5e29733f41a209a74"
+    },
+    {
+      "task": "position",
+      "dimension": 3,
+      "seed": 45,
+      "score": 63.68403434753418,
+      "metric": "R2_percent",
+      "result_sha256": "6dac67482564424891d2f56763453e3b1118a0e201fa6098e1a8387641792949"
+    },
+    {
+      "task": "position",
+      "dimension": 3,
+      "seed": 46,
+      "score": 64.14100527763367,
+      "metric": "R2_percent",
+      "result_sha256": "7ee5582ef1768cf7517db57770291a59d83891b6c65af93491528b74501968ad"
+    },
+    {
+      "task": "position",
+      "dimension": 4,
+      "seed": 42,
+      "score": 73.37011098861694,
+      "metric": "R2_percent",
+      "result_sha256": "9e56d27db02dc6c09e8168d72ac5c090c097248ed0fc84b1a9f15392c4e053a6"
+    },
+    {
+      "task": "position",
+      "dimension": 4,
+      "seed": 43,
+      "score": 72.3936378955841,
+      "metric": "R2_percent",
+      "result_sha256": "1ccb13e5d12d8d04858bd3a98371114d40d10591032101fdc5ef9aa5a76cc4dc"
+    },
+    {
+      "task": "position",
+      "dimension": 4,
+      "seed": 44,
+      "score": 76.86680555343628,
+      "metric": "R2_percent",
+      "result_sha256": "1e898d59bdcd0ccf64e3f6ae19b5a9a7dbd06867129a0702f852dac5f4cd9d8b"
+    },
+    {
+      "task": "position",
+      "dimension": 4,
+      "seed": 45,
+      "score": 72.62240052223206,
+      "metric": "R2_percent",
+      "result_sha256": "121849590c6fde5be57fd53b26b7d794403ce3672b07f5e24db87a4843ef2184"
+    },
+    {
+      "task": "position",
+      "dimension": 4,
+      "seed": 46,
+      "score": 72.31134176254272,
+      "metric": "R2_percent",
+      "result_sha256": "9711cef6dcd5c9f92d1dec5e2fec10c40ed1b9a4edb760433bff7d08260aaeb8"
+    },
+    {
+      "task": "position",
+      "dimension": 8,
+      "seed": 42,
+      "score": 80.57456016540527,
+      "metric": "R2_percent",
+      "result_sha256": "9e0724f4a8457f47ae25d7dd0e14ef36af1541cc630f1814b3ec188b943db79b"
+    },
+    {
+      "task": "position",
+      "dimension": 8,
+      "seed": 43,
+      "score": 80.37056922912598,
+      "metric": "R2_percent",
+      "result_sha256": "4df561df00f4523764e8d78696d4d744383424e72a128242811aa0c3e7e5d25d"
+    },
+    {
+      "task": "position",
+      "dimension": 8,
+      "seed": 44,
+      "score": 83.08802843093872,
+      "metric": "R2_percent",
+      "result_sha256": "5f8fba3081623dd5f2bb1ccce9af14c775ae734ee13e35608e58f8068b54381b"
+    },
+    {
+      "task": "position",
+      "dimension": 8,
+      "seed": 45,
+      "score": 82.8730583190918,
+      "metric": "R2_percent",
+      "result_sha256": "9bd0a8b8f48609a5b9f6368e0c0e96e5895fd725a2599e43ec2821e1a320903f"
+    },
+    {
+      "task": "position",
+      "dimension": 8,
+      "seed": 46,
+      "score": 78.69317531585693,
+      "metric": "R2_percent",
+      "result_sha256": "bdc0e08a636e34f2395868c3f6839db3f92d55f91dbd2992d0ed3a3216ce956b"
+    },
+    {
+      "task": "position",
+      "dimension": 16,
+      "seed": 42,
+      "score": 79.32098507881165,
+      "metric": "R2_percent",
+      "result_sha256": "dd54c4abd9828ed75cba518eb11f9d9eaa02830b20314bfe244351692a25c572"
+    },
+    {
+      "task": "position",
+      "dimension": 16,
+      "seed": 43,
+      "score": 83.24339389801025,
+      "metric": "R2_percent",
+      "result_sha256": "f862c602b5dde0ddfea6e8a178bc75c6199c47d709486da718b1cfbf3a9672a2"
+    },
+    {
+      "task": "position",
+      "dimension": 16,
+      "seed": 44,
+      "score": 83.00142288208008,
+      "metric": "R2_percent",
+      "result_sha256": "7047b34465f3e2f7b5c65d5ec8f48cafe3d592b9c2b1dd767eb34bbd7337756b"
+    },
+    {
+      "task": "position",
+      "dimension": 16,
+      "seed": 45,
+      "score": 80.95283508300781,
+      "metric": "R2_percent",
+      "result_sha256": "1e17a7a816901405652bcea0d8f798002bf4a25ffe2f703f63d7ec7151a35a2b"
+    },
+    {
+      "task": "position",
+      "dimension": 16,
+      "seed": 46,
+      "score": 79.09141778945923,
+      "metric": "R2_percent",
+      "result_sha256": "2334bada67746dcee2083bacfec8c6ee73afd9d2fb44af76deca9b7ca90d554a"
+    },
+    {
+      "task": "position",
+      "dimension": 32,
+      "seed": 42,
+      "score": 79.05912399291992,
+      "metric": "R2_percent",
+      "result_sha256": "b49a67a848bc1cd14f8edcd231af1bde2fa431dcc9f381a320d936869811660c"
+    },
+    {
+      "task": "position",
+      "dimension": 32,
+      "seed": 43,
+      "score": 81.99154734611511,
+      "metric": "R2_percent",
+      "result_sha256": "35ee137229388b160825261487844f91760ac0df15e77941b9babde93525bb30"
+    },
+    {
+      "task": "position",
+      "dimension": 32,
+      "seed": 44,
+      "score": 81.63846135139465,
+      "metric": "R2_percent",
+      "result_sha256": "81d4cf91df9912a5320e0564326ded08653703630b80c91c1d6d481709af2f59"
+    },
+    {
+      "task": "position",
+      "dimension": 32,
+      "seed": 45,
+      "score": 81.21109008789062,
+      "metric": "R2_percent",
+      "result_sha256": "ea71f8e3fb967f9a6d1910a858a91b82546422f2b91e58468bca08fc0ff26802"
+    },
+    {
+      "task": "position",
+      "dimension": 32,
+      "seed": 46,
+      "score": 79.72745895385742,
+      "metric": "R2_percent",
+      "result_sha256": "cb8ece7fd117abcc9ed20fe40d481ead9e65b99a2a37c4b69bc92909d136cb35"
+    },
+    {
+      "task": "direction",
+      "dimension": 3,
+      "seed": 42,
+      "score": 62.698717948717956,
+      "metric": "accuracy_percent",
+      "result_sha256": "fd4445b1c4f0751064364f949e62da873c42b5be32d027d175dafaf55787d532"
+    },
+    {
+      "task": "direction",
+      "dimension": 3,
+      "seed": 43,
+      "score": 60.76282051282051,
+      "metric": "accuracy_percent",
+      "result_sha256": "f490ad458124efe9d034b2d0d63b551ce26865a7a79bbff7e8551b0b693c845c"
+    },
+    {
+      "task": "direction",
+      "dimension": 3,
+      "seed": 44,
+      "score": 58.72435897435897,
+      "metric": "accuracy_percent",
+      "result_sha256": "effe7bd68b393432f586ced72d22f2279620cfb296b0952573daeff2700523af"
+    },
+    {
+      "task": "direction",
+      "dimension": 3,
+      "seed": 45,
+      "score": 58.85897435897436,
+      "metric": "accuracy_percent",
+      "result_sha256": "9f8d17141913d442704096a4e9318780ad5d1291a6e108b694732c8dd38faaa2"
+    },
+    {
+      "task": "direction",
+      "dimension": 3,
+      "seed": 46,
+      "score": 58.967948717948715,
+      "metric": "accuracy_percent",
+      "result_sha256": "18e55aef1cb73d3ee9534bedd79ba48a03fbdce47b9c1a6025f69902edd6ab7c"
+    },
+    {
+      "task": "direction",
+      "dimension": 4,
+      "seed": 42,
+      "score": 64.4423076923077,
+      "metric": "accuracy_percent",
+      "result_sha256": "2e310af7e2634db4684d1d392d44716b1f602400cf8d061cf1893e72a2b9ad67"
+    },
+    {
+      "task": "direction",
+      "dimension": 4,
+      "seed": 43,
+      "score": 63.92307692307693,
+      "metric": "accuracy_percent",
+      "result_sha256": "0092dea13655c44ec2aabae2a4542fe1907e2eb7a0aa635c98352a03e1b01409"
+    },
+    {
+      "task": "direction",
+      "dimension": 4,
+      "seed": 44,
+      "score": 62.31410256410257,
+      "metric": "accuracy_percent",
+      "result_sha256": "8bde8adaa051ffe990760a346834245ba3c5ea138db0af632a53bade43e57cb0"
+    },
+    {
+      "task": "direction",
+      "dimension": 4,
+      "seed": 45,
+      "score": 65.05128205128206,
+      "metric": "accuracy_percent",
+      "result_sha256": "36f1be1ff1ba518d8b76dee55000a913d0e72f239c778b86cc68850d0776961b"
+    },
+    {
+      "task": "direction",
+      "dimension": 4,
+      "seed": 46,
+      "score": 63.95512820512821,
+      "metric": "accuracy_percent",
+      "result_sha256": "8809b1c8ba43d7ad8e467c763d40aaf7745915b1f564793197bc790551ebb6b6"
+    },
+    {
+      "task": "direction",
+      "dimension": 8,
+      "seed": 42,
+      "score": 67.5448717948718,
+      "metric": "accuracy_percent",
+      "result_sha256": "192e93fbd0a4bb70f7cbff8433df975d4e4180a85d6c6297eda9ec8391adef29"
+    },
+    {
+      "task": "direction",
+      "dimension": 8,
+      "seed": 43,
+      "score": 66.02564102564102,
+      "metric": "accuracy_percent",
+      "result_sha256": "9fd14f6a9eb97fdfe3001adff16478e324bf12dc109da606a51aacdceb20beb8"
+    },
+    {
+      "task": "direction",
+      "dimension": 8,
+      "seed": 44,
+      "score": 66.19871794871794,
+      "metric": "accuracy_percent",
+      "result_sha256": "8815186f328d49a05faf107e690de20b85ae9f12a0fd0bd9a9df1170aee954e8"
+    },
+    {
+      "task": "direction",
+      "dimension": 8,
+      "seed": 45,
+      "score": 65.91666666666667,
+      "metric": "accuracy_percent",
+      "result_sha256": "0d2ab295212de6ca6447ffb30529ed56b442474d11aaa59613f8c61c51c75630"
+    },
+    {
+      "task": "direction",
+      "dimension": 8,
+      "seed": 46,
+      "score": 63.97435897435897,
+      "metric": "accuracy_percent",
+      "result_sha256": "b82644a91fbe7d07b4f31087c28259c584e5d289d7d482271803ba82ce8414d0"
+    },
+    {
+      "task": "direction",
+      "dimension": 16,
+      "seed": 42,
+      "score": 66.18589743589743,
+      "metric": "accuracy_percent",
+      "result_sha256": "60a68f0b426c6f01507d503d27b38f9d68b99a379ae1445293949a51c94cde4c"
+    },
+    {
+      "task": "direction",
+      "dimension": 16,
+      "seed": 43,
+      "score": 64.96153846153845,
+      "metric": "accuracy_percent",
+      "result_sha256": "a1f543d9bbae910caa5c9d16367f8086d82ee03d1a944d6c69ddbc9379520c9d"
+    },
+    {
+      "task": "direction",
+      "dimension": 16,
+      "seed": 44,
+      "score": 67.10897435897436,
+      "metric": "accuracy_percent",
+      "result_sha256": "2d9943fc363468f3f361e08ff62718cc04181fa208bad904a672abe840e2a031"
+    },
+    {
+      "task": "direction",
+      "dimension": 16,
+      "seed": 45,
+      "score": 67.12820512820514,
+      "metric": "accuracy_percent",
+      "result_sha256": "b37c519eaa946e2aa6534269bccbb6748b865fd8ed51b12e86b19bca7867b812"
+    },
+    {
+      "task": "direction",
+      "dimension": 16,
+      "seed": 46,
+      "score": 65.46153846153845,
+      "metric": "accuracy_percent",
+      "result_sha256": "dde6ed3884916864eec8fbdc1839e11266e4707618d061791a8ba4df52c9fede"
+    },
+    {
+      "task": "direction",
+      "dimension": 32,
+      "seed": 42,
+      "score": 64.47435897435896,
+      "metric": "accuracy_percent",
+      "result_sha256": "c4460c3e192f72075b199adedd3066dfd4fcf79d919d3dc7ab293b7bcf9eb74e"
+    },
+    {
+      "task": "direction",
+      "dimension": 32,
+      "seed": 43,
+      "score": 60.38461538461538,
+      "metric": "accuracy_percent",
+      "result_sha256": "425996fd9462eefc30175036e0bd84ce457d69faa7563de3c53c98dcc19c3992"
+    },
+    {
+      "task": "direction",
+      "dimension": 32,
+      "seed": 44,
+      "score": 58.493589743589745,
+      "metric": "accuracy_percent",
+      "result_sha256": "ccc6fcb804c3b4b0b702ce356515ab92694e5905db006adfcaf9866f8f11ba01"
+    },
+    {
+      "task": "direction",
+      "dimension": 32,
+      "seed": 45,
+      "score": 65.31410256410255,
+      "metric": "accuracy_percent",
+      "result_sha256": "3a9bdbdc2abd07a147ca415017dbcd68eba3e5147c43ad6c8f3270c72bfe4c26"
+    },
+    {
+      "task": "direction",
+      "dimension": 32,
+      "seed": 46,
+      "score": 68.37820512820512,
+      "metric": "accuracy_percent",
+      "result_sha256": "06ec3f186066493da3c3eaff5e52fa0bfe811e9e1b221c88bb1d409b1ead5d81"
+    },
+    {
+      "task": "ap",
+      "dimension": 3,
+      "seed": 42,
+      "score": 71.14130434782608,
+      "metric": "accuracy_percent",
+      "result_sha256": "c434c4a01b974943bed2ab2cd4cd532a49023fd47ed21668e18a2f8157f76a38"
+    },
+    {
+      "task": "ap",
+      "dimension": 3,
+      "seed": 43,
+      "score": 71.82246376811594,
+      "metric": "accuracy_percent",
+      "result_sha256": "b2815217a625278825ea64c055011390427670d8fc38f278252397bc8dd59dab"
+    },
+    {
+      "task": "ap",
+      "dimension": 3,
+      "seed": 44,
+      "score": 70.71376811594203,
+      "metric": "accuracy_percent",
+      "result_sha256": "bbc514e92e16c0f66324de29170ff66e392a171c89ccb898fa5303af079e2029"
+    },
+    {
+      "task": "ap",
+      "dimension": 3,
+      "seed": 45,
+      "score": 70.86956521739131,
+      "metric": "accuracy_percent",
+      "result_sha256": "551b6caca0bd7a19e893e826d6238ac0a0baa7576c18e9217443f05a9cc3234f"
+    },
+    {
+      "task": "ap",
+      "dimension": 3,
+      "seed": 46,
+      "score": 72.3586956521739,
+      "metric": "accuracy_percent",
+      "result_sha256": "9295b4ccbfc926be79c5e09eba46c9925fa42f4c1772995b510c1d758bd425d6"
+    },
+    {
+      "task": "ap",
+      "dimension": 4,
+      "seed": 42,
+      "score": 68.5036231884058,
+      "metric": "accuracy_percent",
+      "result_sha256": "f6526bf197b462ad3b4e3be6d56cf170fcbb720ae92f534d6ce055333248b2b1"
+    },
+    {
+      "task": "ap",
+      "dimension": 4,
+      "seed": 43,
+      "score": 70.69927536231884,
+      "metric": "accuracy_percent",
+      "result_sha256": "d089400348b9a7991723ea8e5b2b055d1bdb8abdfcdcebb709d8e9711e32d5e1"
+    },
+    {
+      "task": "ap",
+      "dimension": 4,
+      "seed": 44,
+      "score": 67.51086956521739,
+      "metric": "accuracy_percent",
+      "result_sha256": "ce9e8423f41e84a2fc895d2db52e8cb33700f945f593090f7cf6503fe3000821"
+    },
+    {
+      "task": "ap",
+      "dimension": 4,
+      "seed": 45,
+      "score": 69.44202898550725,
+      "metric": "accuracy_percent",
+      "result_sha256": "dfc77dfb77193afe96691782ae48c866f38656112dbcf994fcf63e252e44c1ad"
+    },
+    {
+      "task": "ap",
+      "dimension": 4,
+      "seed": 46,
+      "score": 69.28260869565217,
+      "metric": "accuracy_percent",
+      "result_sha256": "2c16cd9368b235faf3884ff3e9cbaf46903726adb67054795a056d6da1f3e0e2"
+    },
+    {
+      "task": "ap",
+      "dimension": 8,
+      "seed": 42,
+      "score": 74.06521739130434,
+      "metric": "accuracy_percent",
+      "result_sha256": "d981441cabbf6337c862750acb5f213d46a0b87dc349b03f115f46672f49aa33"
+    },
+    {
+      "task": "ap",
+      "dimension": 8,
+      "seed": 43,
+      "score": 73.68115942028986,
+      "metric": "accuracy_percent",
+      "result_sha256": "6d8b5f6956c2133479ee854489049ff4e1c68dbb96878cdbe448ed7bb8498c26"
+    },
+    {
+      "task": "ap",
+      "dimension": 8,
+      "seed": 44,
+      "score": 74.07971014492753,
+      "metric": "accuracy_percent",
+      "result_sha256": "ea475f5dab289a905901d69a71e88495ee9daa07793a91811761dd38c5764b64"
+    },
+    {
+      "task": "ap",
+      "dimension": 8,
+      "seed": 45,
+      "score": 75.32971014492753,
+      "metric": "accuracy_percent",
+      "result_sha256": "c98932e33b5e763f83e95710f73f3d1c5a39dd95fca63aba4d47617681089fe9"
+    },
+    {
+      "task": "ap",
+      "dimension": 8,
+      "seed": 46,
+      "score": 74.23550724637681,
+      "metric": "accuracy_percent",
+      "result_sha256": "3f3896b13f00a137e09be507dde087675f2b7885f8158d75b982ef37751a56c5"
+    },
+    {
+      "task": "ap",
+      "dimension": 16,
+      "seed": 42,
+      "score": 74.36231884057972,
+      "metric": "accuracy_percent",
+      "result_sha256": "f731120097dd7ae944816350963a823a813db7127d14210d3858f6e1e2ebef8e"
+    },
+    {
+      "task": "ap",
+      "dimension": 16,
+      "seed": 43,
+      "score": 74.91666666666667,
+      "metric": "accuracy_percent",
+      "result_sha256": "57db7e7c879ca7908d951407a066b48396268067e3172906fe14dd094c9cfa3a"
+    },
+    {
+      "task": "ap",
+      "dimension": 16,
+      "seed": 44,
+      "score": 74.48188405797102,
+      "metric": "accuracy_percent",
+      "result_sha256": "55998398643e37a4b426115c9561619675a904dc942aab916d35d5fb3a140c41"
+    },
+    {
+      "task": "ap",
+      "dimension": 16,
+      "seed": 45,
+      "score": 75.23188405797102,
+      "metric": "accuracy_percent",
+      "result_sha256": "c9ddfbb79b10fdd791e2061f60d4ccfc008be5799bc55b464f0c5a2a3d221904"
+    },
+    {
+      "task": "ap",
+      "dimension": 16,
+      "seed": 46,
+      "score": 76.14492753623189,
+      "metric": "accuracy_percent",
+      "result_sha256": "6e590a7c394c3e19b25c865aff1db4083b9b81de54954632fc98dd79ff6baffa"
+    },
+    {
+      "task": "ap",
+      "dimension": 32,
+      "seed": 42,
+      "score": 74.17753623188406,
+      "metric": "accuracy_percent",
+      "result_sha256": "d0a56c1352f44380b955723dc0a258d04720d4e42ee32e7e1fc4b08b85dcf1b3"
+    },
+    {
+      "task": "ap",
+      "dimension": 32,
+      "seed": 43,
+      "score": 75.03985507246377,
+      "metric": "accuracy_percent",
+      "result_sha256": "be99458502ada7dcf9333ee36a054d28ea93f0e25bd95467d4d3527af3bbee25"
+    },
+    {
+      "task": "ap",
+      "dimension": 32,
+      "seed": 44,
+      "score": 74.94565217391305,
+      "metric": "accuracy_percent",
+      "result_sha256": "4b258ce38a058cad40f7f681bb0ef0c9a4732f17e161b8cc6fb923b444921424"
+    },
+    {
+      "task": "ap",
+      "dimension": 32,
+      "seed": 45,
+      "score": 76.19202898550725,
+      "metric": "accuracy_percent",
+      "result_sha256": "b58227a15424306ee9b3e3da68dc9286406e66e284af223c7e891904f709993b"
+    },
+    {
+      "task": "ap",
+      "dimension": 32,
+      "seed": 46,
+      "score": 74.81884057971014,
+      "metric": "accuracy_percent",
+      "result_sha256": "e39e61af6b0c34103f8fd566f8bda480018cf596d6139289d1664431cda8e1da"
+    }
+  ],
+  "plot_script_sha256": "fec1f4f9f881580f23823f5d408faad8383f3d9a6c2f5985c770b98f7401b5e4",
+  "presentation": "five black seed points and orange median per dimension, per Figure 3h",
+  "deviation": "axis limits expand only if needed to keep all local results visible"
+}

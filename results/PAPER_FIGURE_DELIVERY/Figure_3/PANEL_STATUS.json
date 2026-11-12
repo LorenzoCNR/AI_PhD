@@ -1,0 +1,12 @@
+{
+  "figure3a": "complete_in_monkey_figure3_v1_stage00",
+  "figure3b": "local CEBRA and multi-method full-sample descriptive panels complete; no held-out filter",
+  "figure3c": "complete_local_fit_descriptive",
+  "figure3d": "complete_local_fit_descriptive",
+  "figure3e": "complete_local_fit_descriptive",
+  "figure3f": "complete_local_fit_descriptive",
+  "figure3g": "complete_local_fit_descriptive",
+  "figure3h": "complete_heldout_decoding",
+  "figure3i": "complete_heldout_position_decoding",
+  "note": "Reference HDF5 was not used to render local results. Full-sample descriptive, not held-out."
+}

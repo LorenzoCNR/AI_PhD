@@ -1,6 +1,29 @@
 # Figura 2b–2c: audit e riproduzione
 
+## Aggiornamento 2026-11-12: campagna 2c trial-safe completata
+
+La campagna aggiornata ha verificato 24 fit CEBRA: 20 nuovi e 4 fit Position trial-safe riutilizzati (Achilles e Gatsby, split e full). Tutti sono in output 3D, hanno completato 10.000 update e superato i controlli di hash e integrita; i fit nuovi e quelli Position riutilizzati riportano CUDA. I fit Soft CNN e Soft Transformer gia presenti sono stati confrontati senza rifare il training.
+
+Per i fit CEBRA Direction e Position + Direction le label sono continue float32. Il loader e ContinuousDataLoader con TimedeltaDistribution e time_delta=10; i donor sono limitati alla stessa trial. La finestra neurale usa 10 bin con offset da -5 a +4. Configurazione: batch 512, Adam, learning rate 0.0003, InfoNCE con cosine e temperatura 1.
+
+Balanced accuracy del decoder di direzione su test held-out, media e deviazione standard descrittiva tra i due ratti:
+
+| Condizione embedding | CEBRA | Soft CNN | Soft Transformer |
+|---|---:|---:|---:|
+| Position | 0.569 +/- 0.000 | 0.584 +/- 0.020 | 0.577 +/- 0.048 |
+| Direction | 0.586 +/- 0.036 | 0.773 +/- 0.204 | 0.789 +/- 0.190 |
+| Position + Direction | 0.811 +/- 0.188 | 0.788 +/- 0.218 | 0.790 +/- 0.196 |
+| Position shuffled | 0.542 +/- 0.014 | 0.507 +/- 0.011 | 0.509 +/- 0.000 |
+| Direction shuffled | 0.590 +/- 0.025 | 0.534 +/- 0.014 | 0.522 +/- 0.002 |
+| Position + Direction shuffled | 0.521 +/- 0.023 | 0.513 +/- 0.030 | 0.499 +/- 0.018 |
+
+I fit split usano train per l'addestramento, validation per selezionare k e test held-out per la valutazione. I fit full sono descrittivi e non sono stime test. Le differenze sono descrittive (due ratti, un seed/split) e non supportano inferenza statistica. Un decoder sopra chance sugli embedding shuffled misura la direzione reale ancora leggibile dalle feature e non dimostra da solo leakage.
+
+Il codice dedicato e in `codice/figura_2c_trial_safe/`. L'audit dettagliato, tutte le tabelle, i plot, gli embedding e i fit restano negli output locali `results/figura_2_2026-10-28/2c/2c_cebra_continuous_trial_safe/`; i fit e gli embedding sono esclusi dal repository secondo la policy qui documentata.
+
 ## Evidenza originale
+
+> **Stato al 2026-11-02 (storico):** in quella data gli artefatti locali generati per Figura 2c e gli script dedicati erano stati rimossi su richiesta. `Figure2_official.h5` era stato conservato come riferimento sorgente. La campagna trial-safe successiva e descritta nell'aggiornamento del 2026-11-12.
 
 Il file `Figure2_official.h5` è scaricato da https://github.com/AdaptiveMotorControlLab/cebra-figures/blob/main/data/Figure2.h5. I dati ufficiali sono stati ispezionati direttamente: `data/visualization/{hypothesis,shuffled,discovery,hybrid}` contengono ciascuno `embedding` di forma (10178, 3) e `label` di forma (10178, 3). La caption dichiara un fit 5D per Time + Position, quindi la matrice salvata è una vista troncata e non prova che il fit fosse 3D. I dati del primo pannello comportamentale non figurano tra queste quattro chiavi.
 

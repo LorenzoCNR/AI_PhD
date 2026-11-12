@@ -22,6 +22,21 @@
 # Personal/reference-library material is not needed to run the code.
 /Ref Bib/
 
+# Local archives, plots, thesis material, and machine-specific settings.
+/.vscode/
+/Old_Cebra_stuff/
+/Plot Utili/
+/Studio Per/
+/Tesi_papers/
+/dla
+
+# Local working area: only the dedicated Figure 2c trial-safe source is published.
+/codice/*
+!/codice/figura_2c_trial_safe/
+!/codice/figura_2c_trial_safe/*.py
+!/codice/figura_2c_trial_safe/*.ps1
+/codice/figura_2c_trial_safe/test_*.py
+
 # Local progress notes and research scratchpads; keep protocol and README.
 /STATUS.md
 /TODO.md

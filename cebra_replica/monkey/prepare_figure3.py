@@ -14,6 +14,8 @@ from pathlib import Path
 import joblib
 import matplotlib
 import numpy as np
+from matplotlib.cm import ScalarMappable
+from matplotlib.colors import BoundaryNorm, ListedColormap
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -22,6 +24,8 @@ import matplotlib.pyplot as plt
 PROJECT = Path(__file__).resolve().parents[2]
 DATA = PROJECT / "data" / "monkey_reaching_preload_smth_40"
 OUTPUT = PROJECT / "results" / "monkey_figure3_v1" / "stage00_data"
+DELIVERY_PANEL_A = PROJECT / "results" / "figura_3_2026-10-29" / "plot" / "a"
+OFFICIAL_FIG3_IMAGE = PROJECT / "cebra_replica" / "monkey" / "official_reference" / "fig3grey_source.png"
 EXPECTED_MD5 = {
     "all_all.jl": "dea556301fa4fafa86e28cf8621cab5a",
     "all_train.jl": "e280e4cd86969e6fd8bfd3a8f402b2fe",
@@ -142,8 +146,8 @@ def verify_and_map() -> tuple[dict, dict]:
     }
 
 
-def plot_figure3a(complete: dict, destination: Path) -> None:
-    """Use the official Figure 3a scatter/HSV/size/axis-off visual grammar."""
+def plot_figure3a(complete: dict, destination: Path, stem: str) -> None:
+    """Plot full-sample active/passive trajectories with the paper's HSV targets."""
     length = int(complete["trial_len"])
     pos = np.asarray(complete["pos"])
     passive = np.repeat(np.asarray(complete["passive"], dtype=bool), length)
@@ -151,14 +155,44 @@ def plot_figure3a(complete: dict, destination: Path) -> None:
     if not np.isfinite(pos).all() or not np.isin(direction, np.arange(8)).all():
         raise ValueError("Invalid position or direction in Figure 3a data")
 
+    # Match the official notebook's exact discrete colors: hsv(target / 8).
+    cmap = ListedColormap([plt.cm.hsv(i / 8) for i in range(8)])
+    norm = BoundaryNorm(np.arange(-0.5, 8.5, 1), cmap.N)
+    mappable = ScalarMappable(norm=norm, cmap=cmap)
+    official_image = plt.imread(OFFICIAL_FIG3_IMAGE)
+    task_cartoon = official_image[45:155, 0:145, :].copy()
+    # Keep the monkey and manipulandum, but exclude the source figure's labels.
+    task_cartoon[108 - 45 :, 100:, 3] = 0
     with plt.rc_context({"figure.facecolor": "white", "axes.facecolor": "white", "savefig.facecolor": "white"}):
-        fig = plt.figure(figsize=(8, 4))
-        for slot, mask in ((121, ~passive), (122, passive)):
-            ax = fig.add_subplot(slot)
-            ax.scatter(pos[mask, 0], pos[mask, 1], color=plt.cm.hsv(direction[mask] / 8), s=1)
+        fig = plt.figure(figsize=(10, 7))
+        task_ax = fig.add_axes([0.38, 0.735, 0.24, 0.22])
+        task_ax.imshow(task_cartoon, interpolation="nearest")
+        task_ax.axis("off")
+
+        axes = (
+            fig.add_axes([0.04, 0.19, 0.44, 0.49]),
+            fig.add_axes([0.52, 0.19, 0.44, 0.49]),
+        )
+        for ax, mask, title in zip(axes, (~passive, passive), ("Active", "Passive")):
+            ax.scatter(
+                pos[mask, 0], pos[mask, 1], c=direction[mask], cmap=cmap,
+                norm=norm, s=1, linewidths=0, rasterized=True,
+            )
+            ax.set_title(title, fontsize=15, pad=10)
+            ax.set_aspect("equal", adjustable="datalim")
             ax.axis("off")
-        fig.savefig(destination / "FIGURE3A_BEHAVIOR_FROM_OFFICIAL_RAW.png", dpi=300, facecolor="white")
-        fig.savefig(destination / "FIGURE3A_BEHAVIOR_FROM_OFFICIAL_RAW.pdf", facecolor="white")
+
+        colorbar = fig.colorbar(
+            mappable, cax=fig.add_axes([0.20, 0.09, 0.60, 0.035]),
+            orientation="horizontal", ticks=np.arange(8),
+            boundaries=np.arange(-0.5, 8.5, 1), spacing="uniform",
+        )
+        colorbar.set_ticklabels([f"{45 * i}°" for i in range(8)])
+        colorbar.set_label("Movement direction (°)", labelpad=6)
+        colorbar.ax.tick_params(length=0, pad=5)
+        destination.mkdir(parents=True, exist_ok=True)
+        fig.savefig(destination / f"{stem}.png", dpi=300, facecolor="white", bbox_inches="tight")
+        fig.savefig(destination / f"{stem}.pdf", facecolor="white", bbox_inches="tight")
         plt.close(fig)
 
 
@@ -170,11 +204,56 @@ def main() -> None:
         old = json.loads(manifest.read_text(encoding="utf-8"))
         if old["source_file_hashes"] != provenance["source_file_hashes"] or old["all_trial_indices_by_split"] != provenance["all_trial_indices_by_split"]:
             raise ValueError("Existing immutable manifest conflicts with source data")
-    else:
-        manifest.write_text(json.dumps(provenance, indent=2), encoding="utf-8")
-    if not (OUTPUT / "FIGURE3A_BEHAVIOR_FROM_OFFICIAL_RAW.png").exists():
-        plot_figure3a(complete, OUTPUT)
-    print(json.dumps({"output": str(OUTPUT), "trial_counts": provenance["trial_counts"], "fit_performed": False}))
+    provenance["figure3a_render"] = {
+        "renderer": str(Path(__file__).relative_to(PROJECT)),
+        "renderer_sha256": digest(Path(__file__), "sha256"),
+        "target_color_mapping": {
+            str(45 * i): {"direction_code": i, "color": f"matplotlib hsv({i}/8)"}
+            for i in range(8)
+        },
+        "angle_convention": "0 degrees along +x; increasing counter-clockwise",
+        "panels": ["Active", "Passive"],
+        "cartoon_inserted": True,
+        "cartoon_source": "https://images.squarespace-cdn.com/content/v1/57f6d51c9f74566f55ecf271/04855fee-76f8-47cb-8c2c-ff0277dfc885/fig3grey.png?format=2500w",
+        "cartoon_asset": str(OFFICIAL_FIG3_IMAGE.relative_to(PROJECT)),
+        "cartoon_asset_sha256": digest(OFFICIAL_FIG3_IMAGE, "sha256"),
+        "cartoon_note": "Task cartoon cropped from the official Figure 3 reference image; paper caption credits the cartoon to SciDraw.",
+    }
+    manifest.write_text(json.dumps(provenance, indent=2) + "\n", encoding="utf-8")
+
+    plot_figure3a(complete, OUTPUT, "FIGURE3A_BEHAVIOR_FROM_OFFICIAL_RAW")
+    plot_figure3a(complete, DELIVERY_PANEL_A, "Figure_3a_Active_Passive_Movement")
+
+    delivery_manifest = PROJECT / "results" / "figura_3_2026-10-29" / "processo" / "provenienza" / "a" / "PROVENANCE.json"
+    rendered = [
+        DELIVERY_PANEL_A / "Figure_3a_Active_Passive_Movement.pdf",
+        DELIVERY_PANEL_A / "Figure_3a_Active_Passive_Movement.png",
+    ]
+    delivery_record = {
+        "figure": "3a",
+        "training_or_refitting_performed": False,
+        "presentations": [{
+            "description": "Full-sample hand trajectories, separated into active/passive trials and colored by target direction in degrees.",
+            "created_utc": datetime.now(timezone.utc).isoformat(),
+            "renderer": str(Path(__file__).relative_to(PROJECT)),
+            "renderer_sha256": digest(Path(__file__), "sha256"),
+            "data_source": "data/monkey_reaching_preload_smth_40/all_all.jl",
+            "source_sha256": digest(DATA / "all_all.jl", "sha256"),
+            "target_color_mapping": provenance["figure3a_render"]["target_color_mapping"],
+            "angle_convention": provenance["figure3a_render"]["angle_convention"],
+            "cartoon_inserted": True,
+            "cartoon_source": provenance["figure3a_render"]["cartoon_source"],
+            "cartoon_asset": provenance["figure3a_render"]["cartoon_asset"],
+            "cartoon_asset_sha256": provenance["figure3a_render"]["cartoon_asset_sha256"],
+            "cartoon_note": provenance["figure3a_render"]["cartoon_note"],
+            "outputs": [
+                {"path": str(path.relative_to(PROJECT)), "sha256": digest(path, "sha256")}
+                for path in rendered
+            ],
+        }],
+    }
+    delivery_manifest.write_text(json.dumps(delivery_record, indent=2) + "\n", encoding="utf-8")
+    print(json.dumps({"output": str(DELIVERY_PANEL_A), "trial_counts": provenance["trial_counts"], "fit_performed": False, "angle_labels": [f"{45*i}°" for i in range(8)], "cartoon_inserted": True}))
 
 
 if __name__ == "__main__":
